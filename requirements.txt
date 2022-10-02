@@ -4,3 +4,6 @@ seaborn
 sklearn
 streamlit
 opencv-python
+wordcloud
+nltk
+openpyxl
