@@ -1,7 +1,10 @@
 import streamlit as st
-import utils
+from app import utils
 
-def streamlit_odir_intro():
+def header():
+  return {'id': "Introduction", 'icon': 'easel', 'callback': display}
+
+def display():
     # streamlit features
     # TEXT
     # titre

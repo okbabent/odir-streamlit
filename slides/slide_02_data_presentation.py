@@ -1,14 +1,20 @@
+import streamlit as st
 import pandas as pd 
 import seaborn as sns 
-import streamlit as st 
 import matplotlib.pyplot as plt 
 import numpy as np 
-import load_dataset
+from app import load_dataset
 
 
-def streamlit_data_preprocessing():
+def header():
+  return {'id': "Présentation des données", 'icon': 'book', 'callback': display}
+
+def display():
 
     ### Create Title
+    st.title("Présentation des données")
+
+        ### Create Title
     st.title("Description & information sur la base de données")
     st.header("Description")
     st.markdown('La base de données semble ne présenter aucunes données absentes ou manquantes')
@@ -31,3 +37,11 @@ def streamlit_data_preprocessing():
 
     if st.checkbox("Description"):
       st.dataframe(df.describe())
+
+   
+
+      
+      
+
+
+

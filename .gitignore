@@ -1,2 +1,8 @@
 __pycache__
 .DS_Store
+odirenv
+images
+app/streamlit_app_bak.py.txt
+app/ui.py
+assets/style.css
+slides/slide_09_debug.py

@@ -3,12 +3,12 @@ import seaborn as sns
 import streamlit as st 
 import matplotlib.pyplot as plt 
 import numpy as np 
-import load_dataset
+from app import load_dataset
 import functools
 from nltk.tokenize import PunktSentenceTokenizer
 from wordcloud import WordCloud
 from PIL import Image
-import utils
+from app import utils
 
 DEFAULT_NUMBER_OF_ROWS = 5
 DEFAULT_NUMBER_OF_COLUMNS = 5
@@ -27,6 +27,34 @@ def split_diag_key_words(pdSeries):
   
   #.str.split('，', expand=True).stack().reset_index(drop=True)
   #right_diags = df.right_diag_key.str.split('，', expand=True).stack().reset_index(drop=True)
+
+
+#@st.cache(suppress_st_warning=True)
+def word_cloud(df):
+  left_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[0]]).unique()
+  #left_tokens=PunktSentenceTokenizer().tokenize(left_diag_keys)
+  right_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[1]]).unique()
+  left_keys = ','.join(left_diag_keys)
+  right_keys = ','.join(right_diag_keys)
+  #right_tokens=PunktSentenceTokenizer().tokenize(right_diag_keys)
+  #mask_left = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Leftbw2.jpg"))
+  #mask_right = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Rightbw2.jpg"))
+
+  mask = np.array(Image.open(utils.get_ressource('assets', 'mask.png')))
+  wc_left = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
+  wc_right = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
+  fig, ax = plt.subplots(1,2,figsize=(15,10))
+  left=wc_left.generate(left_keys) 
+  right=wc_right.generate(right_keys)
+  ax[0].imshow(wc_left) 
+  ax[0].set_title('Left eye fundus')
+  ax[1].imshow(wc_right) 
+  ax[1].set_title('Right eye fundus')
+  ax[0].grid(False)
+  ax[1].grid(False)
+  ax[0].axis('off')
+  ax[1].axis('off')
+  st.pyplot(fig)
 
 def set_styles(results):
     table_styles = [
@@ -84,10 +112,13 @@ def missing_values(df):
                 portion = (missing / df.shape[0]) * 100
                 st.text(f"'{col}': nombre de donnée manquante '{missing}' ==> '{portion:.2f}%'")
     if flag==0:
-        st.text("Le dataset ne contient aucune donnée manquante.")
+        st.success("Le dataset ne contient aucune donnée manquante.")
 
 
-def streamlit_data_exploration():
+def header():
+  return {'id': "Exploration des données", 'icon': 'binoculars', 'callback': display}
+
+def display():
 
     ### Create Title
     st.title("Exploration du dataset")
@@ -137,29 +168,31 @@ def streamlit_data_exploration():
       #st.dataframe(df.style.highlight_max(axis=0))
 
     if st.checkbox('Diagnostic keywords 2'):
-      left_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[0]]).unique()
-      #left_tokens=PunktSentenceTokenizer().tokenize(left_diag_keys)
-      right_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[1]]).unique()
-      left_keys = ','.join(left_diag_keys)
-      right_keys = ','.join(right_diag_keys)
-      #right_tokens=PunktSentenceTokenizer().tokenize(right_diag_keys)
-      #mask_left = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Leftbw2.jpg"))
-      #mask_right = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Rightbw2.jpg"))
-      mask = np.array(Image.open(utils.get_ressource('assets', 'mask.png')))
-      wc_left = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
-      wc_right = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
-      fig, ax = plt.subplots(1,2,figsize=(15,10))
-      left=wc_left.generate(left_keys) 
-      right=wc_right.generate(right_keys)
-      ax[0].imshow(wc_left) 
-      ax[0].set_title('Left eye fundus')
-      ax[1].imshow(wc_right) 
-      ax[1].set_title('Right eye fundus')
-      ax[0].grid(False)
-      ax[1].grid(False)
-      ax[0].axis('off')
-      ax[1].axis('off')
-      st.pyplot(fig)
+      word_cloud(df)
+      # left_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[0]]).unique()
+      # #left_tokens=PunktSentenceTokenizer().tokenize(left_diag_keys)
+      # right_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[1]]).unique()
+      # left_keys = ','.join(left_diag_keys)
+      # right_keys = ','.join(right_diag_keys)
+      # #right_tokens=PunktSentenceTokenizer().tokenize(right_diag_keys)
+      # #mask_left = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Leftbw2.jpg"))
+      # #mask_right = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Rightbw2.jpg"))
+    
+      # mask = np.array(Image.open(utils.get_ressource('assets', 'mask.png')))
+      # wc_left = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
+      # wc_right = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
+      # fig, ax = plt.subplots(1,2,figsize=(15,10))
+      # left=wc_left.generate(left_keys) 
+      # right=wc_right.generate(right_keys)
+      # ax[0].imshow(wc_left) 
+      # ax[0].set_title('Left eye fundus')
+      # ax[1].imshow(wc_right) 
+      # ax[1].set_title('Right eye fundus')
+      # ax[0].grid(False)
+      # ax[1].grid(False)
+      # ax[0].axis('off')
+      # ax[1].axis('off')
+      # st.pyplot(fig)
 
       
       
