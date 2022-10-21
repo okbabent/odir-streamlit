@@ -5,112 +5,118 @@ def header():
   return {'id': "Introduction", 'icon': 'easel', 'callback': display}
 
 def display():
+
+
+    
     # streamlit features
     # TEXT
     # titre
-    st.title("Streamlit crash course 101:")
+    st.title("Introduction")
 
-    # texte
-    st.text("This simply show a text")
+    st.subheader('Objectif')
+    st.text("L'objectif de ce projet est de proposer un modèle de classification d'images en fonction du type cellulaire présent sur ces dernières.")
 
-    # header \ subheader
-    st.header("This is a Header")
-    st.subheader('This a Subheader')
+    # # texte
+    # st.text("This simply show a text")
 
-    # MARKDOWN
-    st.markdown("## This is a markdown")
+    # # header \ subheader
+    # st.header("This is a Header")
+    # st.subheader('This a Subheader')
 
-    # Link
-    st.markdown('[Google link](https://google.com)')
-    
-    # Write HTML
-    st.write("You can write HTML")
-    html_page = """
-    <div style="background-color:green;padding:50px">
-        <p style="font-size:50px">Streamlit is very awesome</p>
-    </div>
-    """
-    st.markdown(html_page, unsafe_allow_html=True)
-    
-    #html_form = """
-    #<div> 
-    #    <form>
-    #    <input type="text" name="firstname"/>
-    #    </form>
-    #</div>
-    #"""
-    #st.markdown(html_form, unsafe_allow_html=True)
-    
-    # Alert text
-    st.write("Alert text")
+    # # MARKDOWN
+    # st.markdown("## This is a markdown")
 
-    st.success("Success!")
-    st.info("Information")
-    st.warning("Un warning!")
-    st.error("Une erreur")
+    # # Link
+    # st.markdown('[Google link](https://google.com)')
     
-    ## MEDIA
-    # Image
-    # import Image function
-    from PIL import Image
-    st.write("ouverture d'une image:")
+    # # Write HTML
+    # st.write("You can write HTML")
+    # html_page = """
+    # <div style="background-color:green;padding:50px">
+    #     <p style="font-size:50px">Streamlit is very awesome</p>
+    # </div>
+    # """
+    # st.markdown(html_page, unsafe_allow_html=True)
+    
+    # #html_form = """
+    # #<div> 
+    # #    <form>
+    # #    <input type="text" name="firstname"/>
+    # #    </form>
+    # #</div>
+    # #"""
+    # #st.markdown(html_form, unsafe_allow_html=True)
+    
+    # # Alert text
+    # st.write("Alert text")
 
-    # open an image
-    img = Image.open(utils.get_ressource('assets', 'OIP.jpeg'))
+    # st.success("Success!")
+    # st.info("Information")
+    # st.warning("Un warning!")
+    # st.error("Une erreur")
+    
+    # ## MEDIA
+    # # Image
+    # # import Image function
+    # from PIL import Image
+    # st.write("ouverture d'une image:")
 
-    # Plot the image
-    st.image(img, caption="DataScientest")
-    
-    # Audio
-    #audio_file = open('name_of_file.ext', "rb")
-    #audio_bytes = audio_file.read()
-    #st.audio(audio_bytes, format="audio/mp3")
-    
-    # Video with URL
-    st.subheader("une vidéo directement de YouTube:")
-    st.video(data="https://www.youtube.com/watch?v=SNNK6z03TaA")
-    
-    ### WIDGET
-    st.subheader("Let's talk about widgets")
+    # # open an image
+    # img = Image.open(utils.get_ressource('assets', 'OIP.jpeg'))
 
-    # Bouton
-    st.button("Press ME")
+    # # Plot the image
+    # st.image(img, caption="DataScientest")
     
-    # getting interaction button
-    if st.button("Press Me again"):
-        st.success("this is a success!")
+    # # Audio
+    # #audio_file = open('name_of_file.ext', "rb")
+    # #audio_bytes = audio_file.read()
+    # #st.audio(audio_bytes, format="audio/mp3")
     
-    # Checkbox
-    if st.checkbox("Hide & seek"):
-        st.success("showing")
+    # # Video with URL
+    # st.subheader("une vidéo directement de YouTube:")
+    # st.video(data="https://www.youtube.com/watch?v=SNNK6z03TaA")
     
-    # Radio
-    gender_list = ["Man", "Woman"]
-    gender = st.radio("Sélectionner un genre", gender_list)
-    if gender == gender_list[0]:
-        st.info(f"gender is {gender}")
+    # ### WIDGET
+    # st.subheader("Let's talk about widgets")
+
+    # # Bouton
+    # st.button("Press ME")
     
-    # Select
-    location = st.selectbox("Your Job", ["Data Scientist", "Dentist", "Doctor"])
+    # # getting interaction button
+    # if st.button("Press Me again"):
+    #     st.success("this is a success!")
     
-    # Multiselect
-    liste_course = st.multiselect("liste de course",
-                                    ["tomates", "dentifrice", "écouteurs"])
+    # # Checkbox
+    # if st.checkbox("Hide & seek"):
+    #     st.success("showing")
     
-    # Text imput
-    name = st.text_input("your name", "your name here")
-    st.text(name)
+    # # Radio
+    # gender_list = ["Man", "Woman"]
+    # gender = st.radio("Sélectionner un genre", gender_list)
+    # if gender == gender_list[0]:
+    #     st.info(f"gender is {gender}")
     
-    # Number input
-    age = st.number_input("Age", 5, 100)
+    # # Select
+    # location = st.selectbox("Your Job", ["Data Scientist", "Dentist", "Doctor"])
     
-    # text area
-    message = st.text_area("Enter your message")
+    # # Multiselect
+    # liste_course = st.multiselect("liste de course",
+    #                                 ["tomates", "dentifrice", "écouteurs"])
     
-    # Slider
-    niveau = st.slider("select the level", 2, 6)
+    # # Text imput
+    # name = st.text_input("your name", "your name here")
+    # st.text(name)
     
-    # Ballons
-    if st.button("Press me again"):
-        st.write("Yesss, you'r ready!")
-        st.balloons()
+    # # Number input
+    # age = st.number_input("Age", 5, 100)
+    
+    # # text area
+    # message = st.text_area("Enter your message")
+    
+    # # Slider
+    # niveau = st.slider("select the level", 2, 6)
+    
+    # # Ballons
+    # if st.button("Press me again"):
+    #     st.write("Yesss, you'r ready!")
+    #     st.balloons()
