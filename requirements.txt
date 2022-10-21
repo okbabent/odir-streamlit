@@ -12,7 +12,7 @@ nltk
 openpyxl
 streamlit-option-menu
 Pillow
-protobuf==3.20.2
+#protobuf==3.20.2
 #tensorflow
 tensorflow==2.10.0
 
