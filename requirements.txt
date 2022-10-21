@@ -2,7 +2,8 @@ pandas
 matplotlib
 seaborn
 sklearn
-streamlit==1.13.0
+#streamlit==1.13.0
+streamlit-nightly
 watchdog
 opencv-python
 wordcloud
