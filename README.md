@@ -1,8 +1,26 @@
-# odir-streamlit
-# activate env : source ~/Desktop/streamlit-session/bin/activate
-# run project : streamlit run app/streamlit_app.py
-# virtualenv venv
-# source venv/bin/activate
-# pip install -r requirements.txt
-# To run app
-## streamlit run streamlit_app.py
+# Ocular Disease Intelligent Recognition
+### **Compétition Internationale de la \"Peking University\" sur la reconnaissance intelligente de pathologie oculaires (ODIR-2019)**
+<br>
+<br>
+<br>
+
+
+## odir-streamlit application
+<br>
+
+## How to create a virtual env
+```
+virtualenv venv
+source venv/bin/activate
+pip install -r requirements.txt
+```
+
+## Run project
+```
+streamlit run streamlit_app.py
+```
+
+## Activate virtual env
+```
+source venv/bin/activate
+```
