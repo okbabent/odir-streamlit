@@ -10,4 +10,4 @@ nltk
 openpyxl
 streamlit-option-menu
 Pillow
-tensorflow=2.9
+tensorflow==2.9.2
