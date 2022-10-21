@@ -3,6 +3,7 @@ matplotlib
 seaborn
 sklearn
 streamlit
+protobuf==3.9.2
 watchdog
 opencv-python
 wordcloud
