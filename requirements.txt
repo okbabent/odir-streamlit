@@ -2,9 +2,9 @@ pandas
 matplotlib
 seaborn
 sklearn
-#streamlit==1.13.0
+streamlit
 #streamlit-nightly
-streamlit==1.11.0
+#streamlit==1.11.0
 watchdog
 opencv-python
 wordcloud
@@ -12,6 +12,6 @@ nltk
 openpyxl
 streamlit-option-menu
 Pillow
-#protobuf==3.9.2
-tensorflow==2.10.0
-tensorboard==2.10.1
+protobuf==4.21.8
+tensorflow
+#tensorboard==2.10.1
