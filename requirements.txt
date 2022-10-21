@@ -10,5 +10,4 @@ nltk
 openpyxl
 streamlit-option-menu
 Pillow
-tensorflow-cpu
-streamlit-option-menu
+tensorflow
