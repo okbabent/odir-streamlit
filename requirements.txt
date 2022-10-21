@@ -4,7 +4,7 @@ seaborn
 sklearn
 streamlit
 #streamlit-nightly
-#streamlit==1.11.0
+streamlit==1.13.0
 watchdog
 opencv-python
 wordcloud
