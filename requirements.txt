@@ -1,10 +1,9 @@
 pandas
-#matplotlib
-#seaborn
-#sklearn
+matplotlib
+seaborn
+sklearn
 #streamlit-nightly
 #streamlit==1.11.0
-
 watchdog
 opencv-python
 wordcloud
@@ -14,18 +13,17 @@ streamlit-option-menu
 Pillow
 #protobuf==3.20.2
 #tensorflow
-tensorflow==2.10.0
-streamlit==1.11.0
+#tensorflow==2.10.0
+streamlit
 
 
 
-matplotlib==3.5.2 
-scikit-learn==1.1.2
-imbalanced-learn==0.9.1
-scikit-image==0.19.3      
-tqdm==4.64.1
-python-dotenv==0.21.0
-h5py==3.7.0
+#matplotlib
+#scikit-learn
+#imbalanced-learn==0.9.1
+#scikit-image==0.19.3      
+#tqdm==4.64.1
+#python-dotenv==0.21.0
+#h5py==3.7.0
 #PyYAML==6.0
-seaborn==0.12.0
-streamlit-cropper==0.2.0
+##streamlit-cropper==0.2.0
