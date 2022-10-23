@@ -24,7 +24,7 @@ fileWatcherType = "auto"
 
 
 
-headless = false
+headless = true
 
 
 runOnSave = true
