@@ -20,7 +20,7 @@ def display():
     st.markdown('')
     st.markdown('')
     st.markdown('## Sujet soumis en 2019 par la Peking University - Compétition international - ')
-    st.
+    #st.
     #st.markdown("<h1 style='text-align: center; color: white;'>Elaboration d'un modèle de classification des maladies ophtalmiques sur la base des fonds d'oeil</h1>", unsafe_allow_html=True)
 
 
