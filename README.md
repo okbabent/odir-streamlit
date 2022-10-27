@@ -24,3 +24,15 @@ streamlit run streamlit_app.py
 ```
 source venv/bin/activate
 ```
+
+## Deactivate virtual env
+```
+deactivate
+```
+
+## How to Delete virtualenv (env)
+```
+deactivate
+rm -rf env
+```
+

@@ -40,9 +40,10 @@ def word_cloud(df):
   #mask_left = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Leftbw2.jpg"))
   #mask_right = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Rightbw2.jpg"))
 
-  mask = np.array(Image.open(utils.get_ressource('assets', 'mask.png')))
-  wc_left = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
-  wc_right = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
+  mask_left = np.array(Image.open(utils.get_ressource('assets', 'Leftbw2.png')))
+  mask_right = np.array(Image.open(utils.get_ressource('assets', 'Rightbw2.png')))
+  wc_left = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_left)
+  wc_right = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_right)
   fig, ax = plt.subplots(1,2,figsize=(15,10))
   left=wc_left.generate(left_keys) 
   right=wc_right.generate(right_keys)

@@ -11,10 +11,18 @@ def display():
     # streamlit features
     # TEXT
     # titre
-    st.title("Introduction")
+    #st.title("Introduction")
 
-    st.subheader('Objectif')
-    st.text("L'objectif de ce projet est de proposer un modèle de classification d'images en fonction du type cellulaire présent sur ces dernières.")
+    # st.markdown('# Objectif Principal du projet')
+    st.markdown("<h1 style='text-align: center; color: white;'>Objectif: Elaboration d'un modèle de classification des maladies ophtalmiques sur la base des fonds d'oeil</h1>", unsafe_allow_html=True)
+    st.markdown('')
+    st.markdown('')
+    st.markdown('')
+    st.markdown('')
+    st.markdown('## Sujet soumis en 2019 par la Peking University - Compétition international - ')
+    st.
+    #st.markdown("<h1 style='text-align: center; color: white;'>Elaboration d'un modèle de classification des maladies ophtalmiques sur la base des fonds d'oeil</h1>", unsafe_allow_html=True)
+
 
     # # texte
     # st.text("This simply show a text")

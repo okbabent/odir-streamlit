@@ -14,7 +14,6 @@ messageFormat = "%(asctime)s %(message)s"
 
 
 
-
 [server]
 
 folderWatchBlacklist = []
