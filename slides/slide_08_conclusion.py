@@ -8,6 +8,7 @@ def header():
 def display():
     ### Create Title
     st.title("Conclusion")
+    st.balloons()
    
 
       

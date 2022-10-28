@@ -40,13 +40,21 @@ def word_cloud(df):
   #mask_left = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Leftbw2.jpg"))
   #mask_right = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Rightbw2.jpg"))
 
-  mask_left = np.array(Image.open(utils.get_ressource('assets', 'Leftbw2.png')))
-  mask_right = np.array(Image.open(utils.get_ressource('assets', 'Rightbw2.png')))
-  wc_left = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_left)
-  wc_right = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_right)
+  mask_left = np.array(Image.open(utils.get_ressource('assets', 'Leftbw2.jpg')))
+  mask_right = np.array(Image.open(utils.get_ressource('assets', 'Rightbw2.jpg')))
+  wc_left = WordCloud(background_color="black", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_left)
+  wc_right = WordCloud(background_color="black", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_right)
   fig, ax = plt.subplots(1,2,figsize=(15,10))
   left=wc_left.generate(left_keys) 
   right=wc_right.generate(right_keys)
+  fig.set_facecolor('black')
+  fig.tight_layout(pad=2.0)
+  alpha = 1
+  fig.set_alpha(alpha)
+  ax[1].set_facecolor('black')
+  ax[0].set_facecolor('black')
+  ax[1].set_alpha(alpha)
+  ax[0].set_alpha(alpha)
   ax[0].imshow(wc_left) 
   ax[0].set_title('Left eye fundus')
   ax[1].imshow(wc_right) 
@@ -119,6 +127,15 @@ def missing_values(df):
 def header():
   return {'id': "Exploration des données", 'icon': 'binoculars', 'callback': display}
 
+def get_keywork_table(df, side):
+    diag_keys = None
+    side_index = side
+    diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[side_index]]).unique()
+    data = pd.DataFrame(diag_keys, columns=[DIAGNOSTIC_COL_NAMES[side_index]])
+    line_to_plot = st.slider("Selectionez le nombre de mot-clé à afficher", min_value=1, max_value = data.shape[0], value=15)
+    table = data.head(line_to_plot)
+    return table
+
 def display():
 
     ### Create Title
@@ -148,25 +165,37 @@ def display():
       #st.dataframe(df.info())
     
     if st.checkbox("Diagnostic keywords 1"):
-      eye_side_options=[
-            "Oeil gauche",
-            "Oeil droit",
-        ] 
-      diag_side = st.radio('Choisir le côté de l\'oeil',
-        options=eye_side_options,
-      )
-      diag_keys = None
-      side_index = eye_side_options.index(diag_side)
-      diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[side_index]]).unique()
-      data = pd.DataFrame(diag_keys, columns=[DIAGNOSTIC_COL_NAMES[side_index]])
-      line_to_plot = st.slider("Selectionezz le nombre de mot-clé à afficher", min_value=1, max_value = data.shape[0], value=15)
-      results = data.head(line_to_plot)
-      #results = diag_keys[:line_to_plot]
-      #number_of_rows, number_of_columns, style = select_number_of_rows_and_columns(results, 'data_frame', True, False, False, 5, 2)
-      #print('number_of_rows', number_of_rows)
-      #filter_table = filter_results(results, number_of_rows, number_of_columns, style)
-      st.table(results)
-      #st.dataframe(df.style.highlight_max(axis=0))
+      # eye_side_options=[
+      #       "Oeil gauche",
+      #       "Oeil droit",
+      #   ] 
+      # diag_side = st.radio('Choisir le côté de l\'oeil',
+      #   options=eye_side_options,
+      # )
+      # diag_keys = None
+      # side_index = eye_side_options.index(diag_side)
+      # diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[side_index]]).unique()
+      # data = pd.DataFrame(diag_keys, columns=[DIAGNOSTIC_COL_NAMES[side_index]])
+      # line_to_plot = st.slider("Selectionez le nombre de mot-clé à afficher", min_value=1, max_value = data.shape[0], value=15)
+      # results = data.head(line_to_plot)
+      # st.table(results)
+
+      st.subheader('World cloud')
+      word_cloud(df)
+
+      col1, col2 = st.columns(2)
+      with col1:
+        st.subheader('Oeil gauche')
+        table = get_keywork_table(df, 0)
+        st.table(table)
+
+      with col2:
+        st.subheader('Oeil droit')
+        table = get_keywork_table(df, 1)
+        st.table(table)
+
+
+
 
     if st.checkbox('Diagnostic keywords 2'):
       word_cloud(df)
