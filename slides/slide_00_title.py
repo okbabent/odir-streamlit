@@ -30,6 +30,7 @@ def display():
         #st.write("Repositorio de la presentación: https://github.com/sebastiandres/talk_2021_11_pyconcl")
 
     with c0:
-        st.image("https://i0.wp.com/datascientest.com/wp-content/uploads/2022/03/logo-2021-1.png")
+        #st.image("https://i0.wp.com/datascientest.com/wp-content/uploads/2022/03/logo-2021-1.png")
+        st.image("assets/datascientest-logo.png")
     with c2:
       st.image("assets/eye_fundus.png")

@@ -14,12 +14,16 @@ def display():
     #st.title("Introduction")
 
     # st.markdown('# Objectif Principal du projet')
-    st.markdown("<h1 style='text-align: center; color: white;'>Objectif: Elaboration d'un modèle de classification des maladies ophtalmiques sur la base des fonds d'oeil</h1>", unsafe_allow_html=True)
-    st.markdown('')
-    st.markdown('')
-    st.markdown('')
-    st.markdown('')
-    st.markdown('## Sujet soumis en 2019 par la Peking University - Compétition international - ')
+    c0, _, c1 = st.columns([1,1,15])
+    with c0:
+      st.image("assets/datascientest-logo.png")
+    with c1:
+      st.markdown("<h1 style='text-align: center; color: white;'>Objectif: Elaboration d'un modèle de classification des maladies ophtalmiques sur la base des fonds d'oeil</h1>", unsafe_allow_html=True)
+      st.markdown('')
+      st.markdown('')
+      st.markdown('')
+      st.markdown('')
+      st.markdown('## Sujet soumis en 2019 par la Peking University - Compétition international - ')
     #st.
     #st.markdown("<h1 style='text-align: center; color: white;'>Elaboration d'un modèle de classification des maladies ophtalmiques sur la base des fonds d'oeil</h1>", unsafe_allow_html=True)
 
