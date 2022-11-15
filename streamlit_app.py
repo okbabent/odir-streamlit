@@ -38,28 +38,7 @@ def main():
     #print(menu_list)
     menus =  list(map(lambda x: x['id'], menu_list))
     icons = list(map(lambda x: x['icon'], menu_list))
-    # List of rubric
-    # menu_list = [
-    #     {'id': "Titre", 'icon': 'house', 'callback': streamlit_odir_title},
-    #     {'id': "Introduction", 'icon': 'easel', 'callback': streamlit_odir_intro},
-    #     {'id': "Présentation des données", 'icon': 'book', 'callback': streamlit_data_presentation},
-    #     {'id': "Exploration des données", 'icon': 'binoculars', 'callback': streamlit_data_exploration},
-    #     {'id': "Traitement des données", 'icon': 'bar-chart', 'callback': streamlit_data_treatment},
-    #     {'id': "Modélisations", 'icon': 'boxes', 'callback': streamlit_data_modelization},
-    #     {'id': "Analyse et Performance des modèles", 'icon': 'graph-up', 'callback': streamlit_model_analysis},
-    #     {'id': "Perspectives", 'icon': 'eyeglasses', 'callback': streamlit_odir_perspectives},
-    #     {'id': "Conclusion", 'icon': 'list-task', 'callback': streamlit_odir_conclusion},
-    #     {'id': "Debug", 'icon':'', 'callback': streamlit_odir_debug}
-    #     ]
-
-
-    # menus =  list(map(lambda x: x['id'], menu_list))
-    # icons = list(map(lambda x: x['icon'], menu_list))
-    #   # selected_menu_id = st.sidebar.selectbox("Présentation", menu_ids)
-    # # selected_rubric = next(item for item in option_menu if item["id"] == selected_menu_id)
-    # #menus = ["About", "Photo Editing", "Project Planning", "Python e-Course", "Contact"]
-    # #icons = ['house', 'camera fill', 'kanban', 'book','person lines fill']
-
+  
     with st.sidebar:
         choose = option_menu("Présentation", menus,
                             icons=icons,

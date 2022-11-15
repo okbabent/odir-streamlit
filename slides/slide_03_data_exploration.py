@@ -9,6 +9,7 @@ from nltk.tokenize import PunktSentenceTokenizer
 from wordcloud import WordCloud
 from PIL import Image
 from app import utils
+from app import ui
 
 DEFAULT_NUMBER_OF_ROWS = 5
 DEFAULT_NUMBER_OF_COLUMNS = 5
@@ -31,22 +32,23 @@ def split_diag_key_words(pdSeries):
 
 #@st.cache(suppress_st_warning=True)
 def word_cloud(df):
-  left_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[0]]).unique()
-  #left_tokens=PunktSentenceTokenizer().tokenize(left_diag_keys)
-  right_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[1]]).unique()
-  left_keys = ','.join(left_diag_keys)
-  right_keys = ','.join(right_diag_keys)
-  #right_tokens=PunktSentenceTokenizer().tokenize(right_diag_keys)
-  #mask_left = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Leftbw2.jpg"))
-  #mask_right = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Rightbw2.jpg"))
+  left_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[0]])
+  right_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[1]])
+  left_diag_keys = ','.join(left_diag_keys)
+  right_diag_keys = ','.join(right_diag_keys)
+
+  # left_eye = pd.DataFrame(data=df['Left-Diagnostic Keywords'].astype(str))
+  # left_eye_keys = left_eye['Left-Diagnostic Keywords'].str.cat(sep=', ')
+  # right_eye=pd.DataFrame(data=df['Right-Diagnostic Keywords'].astype(str))
+  # right_eye=right_eye['Right-Diagnostic Keywords'].str.cat(sep=', ')
 
   mask_left = np.array(Image.open(utils.get_ressource('assets', 'Leftbw2.jpg')))
   mask_right = np.array(Image.open(utils.get_ressource('assets', 'Rightbw2.jpg')))
   wc_left = WordCloud(background_color="black", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_left)
   wc_right = WordCloud(background_color="black", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_right)
   fig, ax = plt.subplots(1,2,figsize=(15,10))
-  left=wc_left.generate(left_keys) 
-  right=wc_right.generate(right_keys)
+  left=wc_left.generate(left_diag_keys) 
+  right=wc_right.generate(right_diag_keys)
   fig.set_facecolor('black')
   fig.tight_layout(pad=2.0)
   alpha = 1
@@ -149,40 +151,7 @@ def display():
       # Normally, you will store all the necessary path and env variables in a .env file
     df = load_dataset.read_odir_data()
 
-
-    ### Showing the data
-    if st.checkbox("Aperçu des données") :
-      line_to_plot = st.slider("selectionner le nombre de lignes à visualiser", min_value=3, max_value = 100)
-      st.dataframe(df.head(line_to_plot))
-
-    
-    if st.checkbox("Description"):
-      st.dataframe(df.describe())
-
-    if st.checkbox("Données manquantes ?") : 
-      missing_values(df)
-    
-      #st.dataframe(df.info())
-    
-    if st.checkbox("Diagnostic keywords 1"):
-      # eye_side_options=[
-      #       "Oeil gauche",
-      #       "Oeil droit",
-      #   ] 
-      # diag_side = st.radio('Choisir le côté de l\'oeil',
-      #   options=eye_side_options,
-      # )
-      # diag_keys = None
-      # side_index = eye_side_options.index(diag_side)
-      # diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[side_index]]).unique()
-      # data = pd.DataFrame(diag_keys, columns=[DIAGNOSTIC_COL_NAMES[side_index]])
-      # line_to_plot = st.slider("Selectionez le nombre de mot-clé à afficher", min_value=1, max_value = data.shape[0], value=15)
-      # results = data.head(line_to_plot)
-      # st.table(results)
-
-      st.subheader('World cloud')
-      word_cloud(df)
-
+    if st.checkbox("Diagnostic keywords"):
       col1, col2 = st.columns(2)
       with col1:
         st.subheader('Oeil gauche')
@@ -193,38 +162,23 @@ def display():
         st.subheader('Oeil droit')
         table = get_keywork_table(df, 1)
         st.table(table)
+      # st.markdown("* * *")
+      # st.subheader('Nuage de mots clés diagnostiques')
+      # word_cloud(df)
+      # st.markdown("### > Prédominance des fonds d'oeil normaux à gauche comme à droite")
 
-
-
-
-    if st.checkbox('Diagnostic keywords 2'):
+    if st.checkbox("Nuage de mots"):
+      #st.markdown("* * *")
+      txt = ui.title_label('Nuage de mots clés diagnostics')
+      color = "#FFFFFF"
+      #st.markdown(f"<h3 style='text-align: center; color: {color};'La base de données semble ne présente aucunes données absentes ou manquantes</h3>", unsafe_allow_html=True)
+      st.markdown(f"<h3 style='text-align: center; color: {color};'{txt}</h3>", unsafe_allow_html=True)
       word_cloud(df)
-      # left_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[0]]).unique()
-      # #left_tokens=PunktSentenceTokenizer().tokenize(left_diag_keys)
-      # right_diag_keys = split_diag_key_words(df[DIAGNOSTIC_COL_NAMES[1]]).unique()
-      # left_keys = ','.join(left_diag_keys)
-      # right_keys = ','.join(right_diag_keys)
-      # #right_tokens=PunktSentenceTokenizer().tokenize(right_diag_keys)
-      # #mask_left = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Leftbw2.jpg"))
-      # #mask_right = np.array(Image.open("/Users/user/Desktop/Datascientest/Fil_rouge/Rightbw2.jpg"))
-    
-      # mask = np.array(Image.open(utils.get_ressource('assets', 'mask.png')))
-      # wc_left = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
-      # wc_right = WordCloud(background_color="white", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask)
-      # fig, ax = plt.subplots(1,2,figsize=(15,10))
-      # left=wc_left.generate(left_keys) 
-      # right=wc_right.generate(right_keys)
-      # ax[0].imshow(wc_left) 
-      # ax[0].set_title('Left eye fundus')
-      # ax[1].imshow(wc_right) 
-      # ax[1].set_title('Right eye fundus')
-      # ax[0].grid(False)
-      # ax[1].grid(False)
-      # ax[0].axis('off')
-      # ax[1].axis('off')
-      # st.pyplot(fig)
+      #st.markdown("### Prédominance des fonds d'oeil normaux à gauche comme à droite")
+      color = ui.color("blue-green-60")
+      st.write(f"<h3 style='text-align: center; color: {color};'Prédominance des fonds d'oeil normaux à gauche comme à droite</h3>", unsafe_allow_html=True)
 
-      
+
       
 
 

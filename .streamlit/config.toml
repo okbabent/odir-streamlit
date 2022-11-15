@@ -78,9 +78,14 @@ showPyplotGlobalUse = true
 
 [theme]
 
-primaryColor = "#f21111"
+#primaryColor = "#f21111"
 backgroundColor = "#0e1117"
 secondaryBackgroundColor = "#31333F"
 textColor = "#fafafa"
-font = "sans serif"
+#font = "sans serif"
 
+primaryColor="#27DCE0"
+#backgroundColor="#2E86C1"
+#secondaryBackgroundColor="#7F8C8D"
+#textColor="#FF00FF"
+font="sans serif"
