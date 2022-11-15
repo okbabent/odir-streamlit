@@ -144,6 +144,19 @@ def colored_header(label, color=None, description=None):
     if description:
         st.caption(description)
 
+def slide_header(title, gap=None, description=None):
+    c0, _, c1 = st.columns([1,1,15])
+    with c0:
+      st.image("assets/datascientest-logo.png")
+    with c1:
+      st.markdown(f"<h1 style='text-align: center;'>{title}</h1>", unsafe_allow_html=True)
+      if gap:
+        for i in range(gap):
+            st.markdown('')
+      if description:
+        color1 = color("blue-green-60")
+        st.markdown(f"<h2 style='text-align: center; color: {color1}'>{description}<h2>", unsafe_allow_html=True)
+
 
 # From: https://discuss.streamlit.io/t/href-on-image/9693/3
 @st.cache(allow_output_mutation=True)
@@ -171,3 +184,9 @@ def linked_image(image, target_url):
 def title_label(txt):
     color1 = color("custom-100")
     return f"<h3 style='text-align: center; color: {color1};'{txt}</h3>"
+
+def info(txt):
+    #c = color("blue-green-60")
+    #st.markdown(f"<h3 style='text-align: center; color: {color1};'{txt}</h3>", unsafe_allow_html=True)
+    # st.markdown(f"<h3 style='text-align: left;color: {c}'>{txt}<h3>", unsafe_allow_html=True)
+    st.info(txt, icon="ℹ️")

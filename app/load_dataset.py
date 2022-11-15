@@ -10,7 +10,7 @@ def url_to_id(url):
     return x[5]
 
 
-@st.cache(suppress_st_warning=True)
+@st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def read_odir_data():
   #xls_file = utils.get_ressource('data', 'ODIR-5K_Training_Annotations(Updated)_V2.xlsx')
   xls_file = 'data/ODIR-5K_Training_Annotations(Updated)_V2.xlsx'
@@ -18,9 +18,13 @@ def read_odir_data():
   
 
 @st.cache(suppress_st_warning=True)
-def read_csv_data(csv_file_name):
+def read_csv_data(csv_file_name, label_name=None, dict=None):
   csv_file = 'data/' + csv_file_name
-  return pd.read_csv(csv_file)
+  df = pd.read_csv(csv_file)
+  if label_name and dict:
+    df['diagnosis'] = df[label_name].replace(dict)
+  return df
+ 
   
 
 # @st.cache(suppress_st_warning=True)
