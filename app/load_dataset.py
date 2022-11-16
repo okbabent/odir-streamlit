@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import requests
 import io
-from app import utils
+
 
 
 def url_to_id(url):
@@ -27,6 +27,8 @@ def read_csv_data(csv_file_name, label_name=None, dict=None):
     df['diagnosis'] = df[label_name].replace(dict)
   return df
  
+
+
   
 
 # @st.cache(suppress_st_warning=True)

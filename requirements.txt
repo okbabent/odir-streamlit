@@ -12,6 +12,7 @@ Pillow
 tensorflow
 streamlit
 bokeh==2.4.3
+#streamlit-nested-layout
 #google-api-python-client
 #google-auth-httplib2
 #google-auth-oauthlib

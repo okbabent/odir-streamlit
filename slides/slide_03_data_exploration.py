@@ -20,6 +20,49 @@ from bokeh.layouts import row
 from bokeh.models import Panel, Tabs
 import math
 
+
+st.markdown(
+    """
+<style>
+.reportview-container .markdown-text-container {
+    font-family: monospace;
+}
+.sidebar .sidebar-content {
+    background-image: linear-gradient(#2e7bcf,#2e7bcf);
+    color: white;
+}
+.Widget>label {
+    color: white;
+    font-family: monospace;
+}
+[class^="st-b"]  {
+    color: red;
+    font-family: monospace;
+}
+.st-bb {
+    background-color: transparent;
+}
+.st-at {
+    background-color: #0c0080;
+}
+.st-af {
+  font-size: 1.5rem;
+}
+footer {
+    font-family: monospace;
+}
+.reportview-container .main footer, .reportview-container .main footer a {
+    color: #0c0080;
+}
+header .decoration {
+    background-image: none;
+}
+
+</style>
+""",
+    unsafe_allow_html=True,
+)
+
 DEFAULT_NUMBER_OF_ROWS = 5
 DEFAULT_NUMBER_OF_COLUMNS = 5
 DIAGNOSTIC_COL_NAMES = ['Left-Diagnostic Keywords', 'Right-Diagnostic Keywords']
@@ -172,7 +215,7 @@ def get_keywork_table(df, side):
     table = data.head(line_to_plot)
     return table
 
-@st.cache(suppress_st_warning=True, allow_output_mutation=True)
+# @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def exploration1():
   sns.set_style('whitegrid',{'grid.linestyle': ':'})
 
@@ -186,7 +229,7 @@ def exploration1():
   c=sns.kdeplot(ax=ax[1],x='Patient Age', hue='Patient Sex', data=df, legend=True, palette=['m', 'c'], linewidth=2.5)
   st.pyplot(fig)
 
-@st.cache(suppress_st_warning=True, allow_output_mutation=True)
+# @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def exploration2():
   sns.set_style('whitegrid',{'grid.linestyle': ':'})
 
@@ -280,31 +323,8 @@ def exploration2():
   ax80.title.set_text('non-Hypertension - per sex')
   st.pyplot(fig)
 
-@st.cache(suppress_st_warning=True, allow_output_mutation=True)
+# @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def exploration3():
-  # #df_original = df
-
-  # dict1 = {0 : 'Normal',
-  #       1 : 'Diabetes',
-  #       2 : 'Glaucoma',
-  #       3 : 'Cataract',
-  #       4 : 'AMD',
-  #       5 : 'Hypertension',
-  #       6 : 'Myopia',
-  #       7 : 'Others'}
-  # dict2 = {"C" : 'Cataract',
-  #       "D" : 'Diabetes',
-  #       "G" :'Glaucoma',
-  #       "C" :'Cataract',
-  #       "A" :'AMD',
-  #       "M" :'Myopia',
-  #       "N" :'Normal',
-  #       "H" :'Hypertension',
-  #       "O" :'Others'}
-  # df_OB = load_dataset.read_csv_data('df_OB.csv', 'Label', dict1) #Dataset Okba
-  # df_YB = load_dataset.read_csv_data('df_YB.csv', 'Diag', dict2) #Dataset Yannick
-  # df_TV = load_dataset.read_csv_data('df_TV.csv') #Dataset Thibaut
-
   st.code(f'Original - nombre de ligne : {df.shape[0]}\n'
   f'OB - nombre de ligne :  {df_OB.shape[0]}\n'
   f'TV - nombre de ligne :  {df_TV.shape[0]}\n'
@@ -398,9 +418,9 @@ def exploration4():
   color3=Category20c[len(sectors3)]
 
   # instantiating the figure object  
-  graph = figure(title = "Répartition des labels", x_range=(-.7, .7), plot_width=500, plot_height=500)
-  graph2 = figure(title = "Répartition des labels", x_range=(-.7, .7), plot_width=500, plot_height=500)  
-  graph3 = figure(title = "Répartition des labels", x_range=(-.7, .7), plot_width=500, plot_height=500)  
+  graph = figure(title = "Répartition des labels - OB -", x_range=(-.7, .7), plot_width=500, plot_height=500)
+  graph2 = figure(title = "Répartition des labels - YB -", x_range=(-.7, .7), plot_width=500, plot_height=500)  
+  graph3 = figure(title = "Répartition des labels - TV -", x_range=(-.7, .7), plot_width=500, plot_height=500)  
 
   # plotting the graph
   for i in range(len(sectors)):
@@ -438,48 +458,150 @@ def exploration4():
 
   # To display graphs separately : 
   #show(row(graph, graph2, graph3))  
+  c1 ,_, c2,_, c3,_, c4 = st.columns([2,1,2,1,2,1,2])
+  with c1:
+    st.bokeh_chart(graph)
+  with c2:
+    st.bokeh_chart(graph2)
+  with c3:
+    st.bokeh_chart(graph3)
+  with c4: 
+    OB = pd.DataFrame(df_OB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+    OB = OB.rename({'diagnosis': 'OB'}, axis=1)
+
+    YB = pd.DataFrame(df_YB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+    YB = YB.rename({'diagnosis': 'YB'}, axis=1)
+
+    TV = pd.DataFrame(df_TV['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+    TV = TV.rename({'diagnosis': 'TV'}, axis=1)
+
+    st.dataframe(pd.concat([OB, YB, TV], axis=1))
     
 
-  # tab1 = Panel(child=graph, title="OB")
-  # tab2 = Panel(child=graph2, title="YB")
-  # tab3 = Panel(child=graph3, title="TV")
-  #show(Tabs(tabs=[tab1, tab2, tab3]))
-  tab1, tab2, tab3, tab4 = st.tabs(["OB", "YB", "TV", "Récap."])
-  with tab1:
+  
+
+def eye_fundus_image(diag_label):
+  fig, ax = plt.subplots(1,2,figsize=(10,10))
+  fig.set_facecolor('black')
+  fig.tight_layout(pad=2.0)
+  alpha = 1
+  fig.set_alpha(alpha)
+  images = utils.list_images(diag_label)
+
+  if len(images) == 2:
+    left_img = utils.load_image(diag_label, images[0])
+    right_img = utils.load_image(diag_label, images[1])
+    ax[0].imshow(left_img) 
+    ax[0].set_title(images[0][:-4]).set_color('white')
+    ax[1].imshow(right_img) 
+    ax[1].set_title(images[1][:-4]).set_color('white')
+    ax[0].grid(False)
+    ax[1].grid(False)
+    ax[0].axis('off')
+    ax[1].axis('off')
+    st.pyplot(fig)
+
+def eye_fundus_image_tab(tab, diag_label):
+  with tab:
     _ , c, _ = st.columns([1,2,1])
     with c:
-      st.bokeh_chart(graph)
-
-  with tab2:
-    _ , c, _ = st.columns([1,2,1])
-    with c:
-      st.bokeh_chart(graph2)
-
-  with tab3: 
-    _ , c, _ = st.columns([1,2,1])
-    with c:
-      st.bokeh_chart(graph3)
-
-  with tab4: 
-    _ , c, _ = st.columns([1,2,1])
-    with c:
-      OB = pd.DataFrame(df_OB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
-      OB = OB.rename({'diagnosis': 'OB'}, axis=1)
-
-      YB = pd.DataFrame(df_YB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
-      YB = YB.rename({'diagnosis': 'YB'}, axis=1)
-
-      TV = pd.DataFrame(df_TV['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
-      TV = TV.rename({'diagnosis': 'TV'}, axis=1)
-
-      st.dataframe(pd.concat([OB, YB, TV], axis=1))
-
+      eye_fundus_image(diag_label)
 
 def eye_fundus():
-  pass
+  diagnosis_labels = ['Normal', 'Diabetes', 'Glaucoma', 'Cataract', 'AMD', 'Hypertension', 'Myopia',	'Others']
+  # [normal, diabetes, glaucoma, cataract, amd, hypertension, myopia, others] = st.tabs(diagnosis_labels)
+  tabs = st.tabs(diagnosis_labels)
+  for i, tab in enumerate(tabs):
+    eye_fundus_image_tab(tab, diagnosis_labels[i].lower())
+
+def exploration_tab(tab, fn, in_column=True):
+  with tab:
+    if in_column:
+      _ , c, _ = st.columns([1,2,1])
+      with c:
+        fn()
+    else:
+      fn()
+
+def explorations():
+  explorations = [f'Exporation - {e+1}' for e in range(4)]
+  tabs = st.tabs(explorations)
+  for i, tab in enumerate(tabs):
+    exploration_tab(tab, globals()[f"exploration{i+1}"], i != len(explorations)-1)
+
+
+      
+
+  # with tab2:
+  #   _ , c, _ = st.columns([1,2,1])
+  #   with c:
+  #     st.bokeh_chart(graph2)
+
+  # with tab3: 
+  #   _ , c, _ = st.columns([1,2,1])
+  #   with c:
+  #     st.bokeh_chart(graph3)
+
+  # with tab4: 
+  
+  # pass
 
 
 def display():
+
+    # st.markdown(
+    #     """
+    # <style>
+    # .reportview-container .markdown-text-container {
+    #     font-family: monospace;
+    # }
+    # .sidebar .sidebar-content {
+    #     background-image: linear-gradient(#2e7bcf,#2e7bcf);
+    #     color: white;
+    # }
+    # .Widget>label {
+    #     color: white;
+    #     font-family: monospace;
+    # }
+    # [class^="st-b"]  {
+    #     color: red;
+    #     font-family: monospace;
+    # }
+    # .st-bb {
+    #     background-color: transparent;
+    # }
+    # .st-at {
+    #     background-color: #0c0080;
+    # }
+    # .st-af {
+    #   font-size: 1.5rem;
+    # }
+    # footer {
+    #     font-family: monospace;
+    # }
+    # .reportview-container .main footer, .reportview-container .main footer a {
+    #     color: #0c0080;
+    # }
+    # header .decoration {
+    #     background-image: none;
+    # }
+
+    # </style>
+    # """,
+    #     unsafe_allow_html=True,
+    # )
+    # st.markdown(
+    #     """
+    # <style>
+
+    # .st-af {
+    #   font-size: 1.5rem;
+    # }
+ 
+    # </style>
+    # """,
+    #     unsafe_allow_html=True,
+    # )
 
     ### Create Title
     ui.slide_header("Exploration du dataset", gap=2)
@@ -497,30 +619,42 @@ def display():
         table = get_keywork_table(df, 1)
         st.table(table)
 
-      ui.info(f"Nombre de diagnostics pour les fonds d'oeil gauche : {left_diag_keys.nunique()}")
-      ui.info(f"Nombre de diagnostics pour les fonds d'oeil droit : {right_diag_keys.nunique()}")
+      #st.markdown("* * *")
+      # fgc = ui.color("blue-green-10")
+      # bgc = ui.color("blue-green-100")
+      # st.markdown(f"<p style='text-align: center; color: {fgc}; background: {bgc}'>Nombre de diagnostics pour les fonds d'oeil gauche = {left_diag_keys.nunique()}<br>"
+      # f"Nombre de diagnostics pour les fonds d'oeil droit = {right_diag_keys.nunique()}</p>", unsafe_allow_html=True)
+    
+      txt = f"{left_diag_keys.nunique()} diagnostics pour les fonds d'oeil gauche.\n{right_diag_keys.nunique()} diagnostics pour les fonds d'oeil droit."
+      ui.info(txt)
+  
+      
+      # "\nNombre de diagnostics pour les fonds d'oeil droit : {right_diag_keys.nunique()}")
       # st.markdown("* * *")
       # st.subheader('Nuage de mots clés diagnostiques')
       # word_cloud(df)
       # st.markdown("### > Prédominance des fonds d'oeil normaux à gauche comme à droite")
 
     if st.checkbox("Nuage de mots clés diagnostics"):
-      #st.markdown("* * *")
-      #st.markdown(f"<h3 style='text-align: center; color: {color};'La base de données semble ne présente aucunes données absentes ou manquantes</h3>", unsafe_allow_html=True)
-      #st.markdown(f"<h3 style='text-align: center; color: {color};'{txt}</h3>", unsafe_allow_html=True)
       word_cloud()
       # color = ui.color("blue-green-60")
       st.markdown('#')
       ui.info("Prédominance des fonds d'oeil normaux à gauche comme à droite")
 
-    if st.checkbox("Exploration - 1"):
-      exploration1()
-    if st.checkbox("Exploration - 2"):
-      exploration2()
-    if st.checkbox("Exploration - 3"):
-      exploration3()
-    if st.checkbox("Exploration - 4"):
-      exploration4()
+    # if st.checkbox("Exploration - 1"):
+    #   exploration1()
+    # if st.checkbox("Exploration - 2"):
+    #   exploration2()
+    # if st.checkbox("Exploration - 3"):
+    #   exploration3()
+    # if st.checkbox("Exploration - 4"):
+    #   exploration4()
+    if st.checkbox('Exploration'):
+      explorations()
+    if st.checkbox("Exemple de fond d'oeil"):
+      eye_fundus()
+      
+
 
 
       

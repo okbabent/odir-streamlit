@@ -1,6 +1,8 @@
 import streamlit as st
 import base64
 import os
+from PIL import Image
+
 
 """
 Utility functions for:
@@ -35,3 +37,18 @@ def get_ressource(res_folder, res_name):
 
 def show():
   print('Hello world')
+
+def list_images(diag_label):
+  cwd = get_working_directory()
+  # print(cwd)
+  source_folder = os.path.join(cwd, f'data/{diag_label}')
+  #source_folder = f'{cwd}/data/{diag_label}'
+  # print(source_folder)
+  files = [f for f in os.listdir(source_folder) if f[-3:] == 'jpg' and os.path.isfile(os.path.join(source_folder, f))]
+  return files
+
+@st.cache(suppress_st_warning=True)
+def load_image(path, name):
+  image_path = f'data/{path}/{name}'
+  image = Image.open(image_path)
+  return image

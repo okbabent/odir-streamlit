@@ -189,4 +189,9 @@ def info(txt):
     #c = color("blue-green-60")
     #st.markdown(f"<h3 style='text-align: center; color: {color1};'{txt}</h3>", unsafe_allow_html=True)
     # st.markdown(f"<h3 style='text-align: left;color: {c}'>{txt}<h3>", unsafe_allow_html=True)
-    st.info(txt, icon="ℹ️")
+    s = txt.replace('\n', '<br>')
+    fgc = color("blue-green-10")
+    bgc = color("blue-green-100")
+    st.markdown(f"<p style='text-align: center; color: {fgc}; background: {bgc}; padding-top: 10px; padding-bottom: 10px;'>{s}</p>", unsafe_allow_html=True)
+    
+   # st.info(txt, icon="ℹ️")
