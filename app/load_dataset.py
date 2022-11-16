@@ -14,7 +14,9 @@ def url_to_id(url):
 def read_odir_data():
   #xls_file = utils.get_ressource('data', 'ODIR-5K_Training_Annotations(Updated)_V2.xlsx')
   xls_file = 'data/ODIR-5K_Training_Annotations(Updated)_V2.xlsx'
-  return pd.read_excel(xls_file)
+  df = pd.read_excel(xls_file)
+  df['Patient Sex'] = df['Patient Sex'].replace(['Female','Male'],[0,1])
+  return df
   
 
 @st.cache(suppress_st_warning=True)

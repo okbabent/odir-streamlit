@@ -10,17 +10,50 @@ from wordcloud import WordCloud
 from PIL import Image
 from app import utils
 from app import ui
+#from matplotlib.bezier import find_r_to_boundary_of_closedpath
+from bokeh.plotting import figure, show, output_notebook
+from bokeh.palettes import Category20c
+from bokeh.palettes import Paired
+from bokeh.models import LabelSet, ColumnDataSource, HoverTool
+from bokeh.layouts import column
+from bokeh.layouts import row
+from bokeh.models import Panel, Tabs
+import math
 
 DEFAULT_NUMBER_OF_ROWS = 5
 DEFAULT_NUMBER_OF_COLUMNS = 5
 DIAGNOSTIC_COL_NAMES = ['Left-Diagnostic Keywords', 'Right-Diagnostic Keywords']
 
 def load_df():
-  df = load_dataset.read_odir_data()
-  df['Patient Sex'] = df['Patient Sex'].replace(['Female','Male'],[0,1])
-  return df
+  return load_dataset.read_odir_data()
+  
+def load_post_processed_df():
+  dict1 = {0 : 'Normal',
+        1 : 'Diabetes',
+        2 : 'Glaucoma',
+        3 : 'Cataract',
+        4 : 'AMD',
+        5 : 'Hypertension',
+        6 : 'Myopia',
+        7 : 'Others'}
+  dict2 = {"C" : 'Cataract',
+        "D" : 'Diabetes',
+        "G" :'Glaucoma',
+        "C" :'Cataract',
+        "A" :'AMD',
+        "M" :'Myopia',
+        "N" :'Normal',
+        "H" :'Hypertension',
+        "O" :'Others'}
+  df_OB = load_dataset.read_csv_data('df_OB.csv', 'Label', dict1) #Dataset Okba
+  df_YB = load_dataset.read_csv_data('df_YB.csv', 'Diag', dict2) #Dataset Yannick
+  df_TV = load_dataset.read_csv_data('df_TV.csv') #Dataset Thibaut
+  return df_OB, df_YB, df_TV
+
 
 df = load_df()
+
+df_OB, df_YB, df_TV = load_post_processed_df()
 
 
 def split_diag_key_words(pdSeries):
@@ -249,28 +282,28 @@ def exploration2():
 
 @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def exploration3():
-  #df_original = df
+  # #df_original = df
 
-  dict1 = {0 : 'Normal',
-        1 : 'Diabetes',
-        2 : 'Glaucoma',
-        3 : 'Cataract',
-        4 : 'AMD',
-        5 : 'Hypertension',
-        6 : 'Myopia',
-        7 : 'Others'}
-  dict2 = {"C" : 'Cataract',
-        "D" : 'Diabetes',
-        "G" :'Glaucoma',
-        "C" :'Cataract',
-        "A" :'AMD',
-        "M" :'Myopia',
-        "N" :'Normal',
-        "H" :'Hypertension',
-        "O" :'Others'}
-  df_OB = load_dataset.read_csv_data('df_OB.csv', 'Label', dict1) #Dataset Okba
-  df_YB = load_dataset.read_csv_data('df_YB.csv', 'Diag', dict2) #Dataset Yannick
-  df_TV = load_dataset.read_csv_data('df_TV.csv') #Dataset Thibaut
+  # dict1 = {0 : 'Normal',
+  #       1 : 'Diabetes',
+  #       2 : 'Glaucoma',
+  #       3 : 'Cataract',
+  #       4 : 'AMD',
+  #       5 : 'Hypertension',
+  #       6 : 'Myopia',
+  #       7 : 'Others'}
+  # dict2 = {"C" : 'Cataract',
+  #       "D" : 'Diabetes',
+  #       "G" :'Glaucoma',
+  #       "C" :'Cataract',
+  #       "A" :'AMD',
+  #       "M" :'Myopia',
+  #       "N" :'Normal',
+  #       "H" :'Hypertension',
+  #       "O" :'Others'}
+  # df_OB = load_dataset.read_csv_data('df_OB.csv', 'Label', dict1) #Dataset Okba
+  # df_YB = load_dataset.read_csv_data('df_YB.csv', 'Diag', dict2) #Dataset Yannick
+  # df_TV = load_dataset.read_csv_data('df_TV.csv') #Dataset Thibaut
 
   st.code(f'Original - nombre de ligne : {df.shape[0]}\n'
   f'OB - nombre de ligne :  {df_OB.shape[0]}\n'
@@ -291,9 +324,157 @@ def exploration3():
   b.tick_params(axis='x', labelrotation=90)
   c=sns.countplot(ax=ax[0,2], x='diagnosis', data=df_TV)
   c.tick_params(axis='x',labelrotation=90)
+
+
+  ax[0,0].set_title('OB')
+  ax[0,0].set_xlabel('')
+  ax[0,0].set_ylabel('')
+
+  ax[0,1].set_title('YB')
+  ax[0,1].set_xlabel('')
+  ax[0,1].set_ylabel('')
+
+  ax[0,2].set_title('TV')
+  ax[0,2].set_xlabel('')
+  ax[0,2].set_ylabel('')
+
   st.pyplot(fig)
 
   
+def exploration4():
+
+  # df_OB = load_dataset.read_csv_data('df_OB.csv') #Dataset Okba
+  # df_YB = load_dataset.read_csv_data('df_YB.csv') #Dataset Yannick
+  # df_TV = load_dataset.read_csv_data('df_TV.csv') #Dataset Thibaut
+  # name of the sectors
+  sectors = df_OB['diagnosis'].value_counts().index
+  sectors2 = df_YB['diagnosis'].value_counts().index  
+  sectors3 = df_TV['diagnosis'].value_counts().index 
+
+  # % tage weightage of the sectors
+  percentages = df_OB['diagnosis'].value_counts(normalize=True).round(3)*100
+  percentages2 = df_YB['diagnosis'].value_counts(normalize=True).round(3)*100  
+  percentages3 = df_TV['diagnosis'].value_counts(normalize=True).round(3)*100  
+
+  # converting into radians
+  radians = [math.radians((percent / 100) * 360) for percent in percentages]
+  radians2 = [math.radians((percent / 100) * 360) for percent in percentages2]
+  radians3 = [math.radians((percent / 100) * 360) for percent in percentages3]
+
+  # starting angle values
+  start_angle = [math.radians(0)]
+  prev = start_angle[0]
+  for i in radians[:-1]:
+      start_angle.append(i + prev)
+      prev = i + prev
+
+  start_angle2 = [math.radians(0)]
+  prev2 = start_angle2[0]
+  for i in radians2[:-1]:
+      start_angle2.append(i + prev2)
+      prev2 = i + prev2
+
+  start_angle3 = [math.radians(0)]
+  prev3 = start_angle3[0]
+  for i in radians3[:-1]:
+      start_angle3.append(i + prev3)
+      prev3 = i + prev3
+    
+  # ending angle values
+  end_angle = start_angle[1:] + [math.radians(0)]
+  end_angle2 = start_angle2[1:] + [math.radians(0)]
+  end_angle3 = start_angle3[1:] + [math.radians(0)]
+    
+  # center of the pie chart
+  x = 0
+  y = 0
+    
+  # radius of the glyphs
+  radius = 1
+    
+  # color of the wedges
+  color=Category20c[len(sectors)]
+  color2=Category20c[len(sectors2)]
+  color3=Category20c[len(sectors3)]
+
+  # instantiating the figure object  
+  graph = figure(title = "Répartition des labels", x_range=(-.7, .7), plot_width=500, plot_height=500)
+  graph2 = figure(title = "Répartition des labels", x_range=(-.7, .7), plot_width=500, plot_height=500)  
+  graph3 = figure(title = "Répartition des labels", x_range=(-.7, .7), plot_width=500, plot_height=500)  
+
+  # plotting the graph
+  for i in range(len(sectors)):
+      g1=graph.annular_wedge(x, y, inner_radius=0.45, outer_radius=0.65, direction="anticlock",
+                            start_angle = start_angle[i], end_angle = end_angle[i], color = color[i],
+                            legend_label = sectors[i], fill_alpha=0.7, line_color='gray')
+      graph.axis.visible = False
+      graph.grid.grid_line_color = None
+      graph.title.align = 'center'
+      graph.title.text_font_size = '16pt'
+      graph.legend.location = 'center'
+      graph.legend.click_policy = 'hide'
+
+  for i in range(len(sectors2)):
+      g2=graph2.annular_wedge(x, y, inner_radius=0.45, outer_radius=0.65, direction="anticlock", 
+                              start_angle = start_angle2[i], end_angle = end_angle2[i], color = color2[i],
+                              legend_label = sectors2[i], fill_alpha=0.7, line_color='gray')
+      graph2.axis.visible = False
+      graph2.grid.grid_line_color = None
+      graph2.title.align = 'center' 
+      graph2.title.text_font_size = '16pt'
+      graph2.legend.location = 'center' 
+      graph2.legend.click_policy = 'hide'
+
+  for i in range(len(sectors3)):
+      g3=graph3.annular_wedge(x, y, inner_radius=0.45, outer_radius=0.65, direction="anticlock", 
+                              start_angle = start_angle3[i], end_angle = end_angle3[i], color = color3[i],
+                              legend_label = sectors3[i], fill_alpha=0.7, line_color='gray')
+      graph3.axis.visible = False
+      graph3.grid.grid_line_color = None
+      graph3.title.align = 'center' 
+      graph3.title.text_font_size = '16pt'
+      graph3.legend.location = 'center' 
+      graph3.legend.click_policy = 'hide'
+
+  # To display graphs separately : 
+  #show(row(graph, graph2, graph3))  
+    
+
+  # tab1 = Panel(child=graph, title="OB")
+  # tab2 = Panel(child=graph2, title="YB")
+  # tab3 = Panel(child=graph3, title="TV")
+  #show(Tabs(tabs=[tab1, tab2, tab3]))
+  tab1, tab2, tab3, tab4 = st.tabs(["OB", "YB", "TV", "Récap."])
+  with tab1:
+    _ , c, _ = st.columns([1,2,1])
+    with c:
+      st.bokeh_chart(graph)
+
+  with tab2:
+    _ , c, _ = st.columns([1,2,1])
+    with c:
+      st.bokeh_chart(graph2)
+
+  with tab3: 
+    _ , c, _ = st.columns([1,2,1])
+    with c:
+      st.bokeh_chart(graph3)
+
+  with tab4: 
+    _ , c, _ = st.columns([1,2,1])
+    with c:
+      OB = pd.DataFrame(df_OB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+      OB = OB.rename({'diagnosis': 'OB'}, axis=1)
+
+      YB = pd.DataFrame(df_YB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+      YB = YB.rename({'diagnosis': 'YB'}, axis=1)
+
+      TV = pd.DataFrame(df_TV['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+      TV = TV.rename({'diagnosis': 'TV'}, axis=1)
+
+      st.dataframe(pd.concat([OB, YB, TV], axis=1))
+
+
 def eye_fundus():
   pass
 
@@ -338,6 +519,8 @@ def display():
       exploration2()
     if st.checkbox("Exploration - 3"):
       exploration3()
+    if st.checkbox("Exploration - 4"):
+      exploration4()
 
 
       
