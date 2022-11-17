@@ -508,6 +508,27 @@ def eye_fundus_image_tab(tab, diag_label):
     _ , c, _ = st.columns([1,2,1])
     with c:
       eye_fundus_image(diag_label)
+ 
+# class ImageSam
+# def filter_df(x, diag_labels, label):
+#   f = x[label] == 1
+#   if not f:
+#     return False
+#   o_labels = [a for a in diag_labels if a != label]
+#   for i in o_labels:
+#     if x[i] != 0:
+#       return False
+#   return True
+
+# def imgae_samples(df, label, samples=8):
+#   diag_labels = ['Normal', 'Diabetes', 'Glaucoma', 'Cataract', 'AMD', 'Hypertension', 'Myopia',	'Others']
+#   newdf = df[df.apply(lambda x: filter_df(x, diag_labels, label), axis=1)]
+#   newdf = newdf.sample(samples).reset_index()
+#   return newdf
+
+# df_diags = [sample_df(df_clean, lab) for lab in diag_labels]
+# for d in df_diags:
+#   display(d.head())
 
 def eye_fundus():
   diagnosis_labels = ['Normal', 'Diabetes', 'Glaucoma', 'Cataract', 'AMD', 'Hypertension', 'Myopia',	'Others']
