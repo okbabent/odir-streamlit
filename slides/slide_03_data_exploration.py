@@ -18,6 +18,8 @@ from bokeh.models import LabelSet, ColumnDataSource, HoverTool
 from bokeh.layouts import column
 from bokeh.layouts import row
 from bokeh.models import Panel, Tabs
+from enum import Enum
+from typing import List
 import math
 
 
@@ -532,129 +534,67 @@ def explorations():
 
       
 
-  # with tab2:
-  #   _ , c, _ = st.columns([1,2,1])
-  #   with c:
-  #     st.bokeh_chart(graph2)
-
-  # with tab3: 
-  #   _ , c, _ = st.columns([1,2,1])
-  #   with c:
-  #     st.bokeh_chart(graph3)
-
-  # with tab4: 
-  
-  # pass
+MenuChoice = {
+  "Diagnostic keywords" : "A",
+  "Nuage de mots clés (Diagnostics)" : "B",
+  "Exploration" : "C",
+  "Exemple d'images de fond d'oeil" : "D"
+}
 
 
-def display():
 
-    # st.markdown(
-    #     """
-    # <style>
-    # .reportview-container .markdown-text-container {
-    #     font-family: monospace;
-    # }
-    # .sidebar .sidebar-content {
-    #     background-image: linear-gradient(#2e7bcf,#2e7bcf);
-    #     color: white;
-    # }
-    # .Widget>label {
-    #     color: white;
-    #     font-family: monospace;
-    # }
-    # [class^="st-b"]  {
-    #     color: red;
-    #     font-family: monospace;
-    # }
-    # .st-bb {
-    #     background-color: transparent;
-    # }
-    # .st-at {
-    #     background-color: #0c0080;
-    # }
-    # .st-af {
-    #   font-size: 1.5rem;
-    # }
-    # footer {
-    #     font-family: monospace;
-    # }
-    # .reportview-container .main footer, .reportview-container .main footer a {
-    #     color: #0c0080;
-    # }
-    # header .decoration {
-    #     background-image: none;
-    # }
-
-    # </style>
-    # """,
-    #     unsafe_allow_html=True,
-    # )
-    # st.markdown(
-    #     """
-    # <style>
-
-    # .st-af {
-    #   font-size: 1.5rem;
-    # }
- 
-    # </style>
-    # """,
-    #     unsafe_allow_html=True,
-    # )
-
-    ### Create Title
-    ui.slide_header("Exploration du dataset", gap=2)
-  
-    if st.checkbox("Diagnostic keywords"):
+def display_choice(menu_choice, args):
+  if menu_choice == 'A':
+    def choice_a(): 
       col1, col2 = st.columns(2)
       color = ui.color("blue-green-60")
       with col1:
         st.markdown(f"<h4 style='text-align: center;color: {color}'>Oeil gauche<h4>", unsafe_allow_html=True)
         table = get_keywork_table(df, 0)
         st.table(table)
-
       with col2:
         st.markdown(f"<h4 style='text-align: center;color: {color}'>Oeil droit<h4>", unsafe_allow_html=True)
         table = get_keywork_table(df, 1)
         st.table(table)
 
-      #st.markdown("* * *")
-      # fgc = ui.color("blue-green-10")
-      # bgc = ui.color("blue-green-100")
-      # st.markdown(f"<p style='text-align: center; color: {fgc}; background: {bgc}'>Nombre de diagnostics pour les fonds d'oeil gauche = {left_diag_keys.nunique()}<br>"
-      # f"Nombre de diagnostics pour les fonds d'oeil droit = {right_diag_keys.nunique()}</p>", unsafe_allow_html=True)
-    
       txt = f"{left_diag_keys.nunique()} diagnostics pour les fonds d'oeil gauche.\n{right_diag_keys.nunique()} diagnostics pour les fonds d'oeil droit."
       ui.info(txt)
-  
-      
-      # "\nNombre de diagnostics pour les fonds d'oeil droit : {right_diag_keys.nunique()}")
-      # st.markdown("* * *")
-      # st.subheader('Nuage de mots clés diagnostiques')
-      # word_cloud(df)
-      # st.markdown("### > Prédominance des fonds d'oeil normaux à gauche comme à droite")
 
-    if st.checkbox("Nuage de mots clés diagnostics"):
+    return choice_a
+
+  if menu_choice == 'B':
+    def choice_b():
       word_cloud()
-      # color = ui.color("blue-green-60")
       st.markdown('#')
       ui.info("Prédominance des fonds d'oeil normaux à gauche comme à droite")
+    return choice_b
 
-    # if st.checkbox("Exploration - 1"):
-    #   exploration1()
-    # if st.checkbox("Exploration - 2"):
-    #   exploration2()
-    # if st.checkbox("Exploration - 3"):
-    #   exploration3()
-    # if st.checkbox("Exploration - 4"):
-    #   exploration4()
-    if st.checkbox('Exploration'):
+  if menu_choice == 'C':
+    def choice_c():
       explorations()
-    if st.checkbox("Exemple de fond d'oeil"):
-      eye_fundus()
-      
+    return choice_c
 
+  if  menu_choice == 'D':
+    def choice_d():
+      eye_fundus()
+    return choice_d
+
+
+
+def main():
+  sub_menus = st.sidebar.radio("Selectionnez une rubrique", options=list(MenuChoice), format_func=lambda x: x.value)
+  fn = display_choice(sub_menus)
+  fn()
+  
+ 
+
+
+def display():
+    ### Create Title
+    ui.slide_header("Exploration du dataset", gap=2)
+    ui.sub_menus(MenuChoice, display_choice)
+
+  
 
 
       

@@ -1,5 +1,7 @@
 import streamlit as st 
-
+from app import ui, utils
+from enum import Enum
+from typing import List
 
 
 def header():
@@ -7,7 +9,8 @@ def header():
 
 def display():
     ### Create Title
-    st.title("Traitement des données")
+    ui.slide_header("Traitement des données", gap=2)
+   
    
 
       

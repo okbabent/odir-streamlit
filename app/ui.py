@@ -1,6 +1,7 @@
 import streamlit as st
 import os
 import base64
+from streamlit_option_menu import option_menu
 
 ST_COLOR_PALETTE = {
     "red": {
@@ -195,3 +196,29 @@ def info(txt):
     st.markdown(f"<p style='text-align: center; color: {fgc}; background: {bgc}; padding-top: 10px; padding-bottom: 10px;'>{s}</p>", unsafe_allow_html=True)
     
    # st.info(txt, icon="ℹ️")
+
+
+def sub_menus(choices: dict, display_choice, **kwargs):
+    options=list(choices.keys())
+    bgc = color("blue-green-70")
+    fgc = color("blue-green-10")
+    sc =  color("blue-green-50")
+    with st.sidebar:
+        choose = option_menu("Selectionnez une rubrique", options,
+                            icons=None,
+                            menu_icon="list-task", default_index=0,
+                            styles={
+            "container": {"padding": "5!important", "background-color": f"{bgc}"},
+            "icon": {"color": f"{fgc}", "font-size": "20px"}, 
+            "menu-icon": {"color":"#FF"},
+            "nav": {"color": "#00FFFF"},
+            "menu-title": {"font-size": "14px", "font-weight": "bold", "color": "black", "text-align": "left", "margin":"0px"},
+            "nav-link": {"font-size": "14px", "color": "black", "text-align": "left", "margin":"0px", "--hover-color": "rgb(70, 40, 221)", "--hover-text-color":"#FFFFFF"},
+            "nav-item": {"color": "#00FF"},
+            "nav-link-selected": {"background-color": f"{sc}"},
+        })
+    choice = choices[choose]
+    fn = display_choice(choice, kwargs)
+    if fn:
+      fn()
+    
