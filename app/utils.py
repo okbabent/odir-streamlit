@@ -2,6 +2,7 @@ import streamlit as st
 import base64
 import os
 from PIL import Image
+import cv2
 
 
 """
@@ -50,5 +51,8 @@ def list_images(diag_label):
 @st.cache(suppress_st_warning=True)
 def load_image(path, name):
   image_path = f'data/{path}/{name}'
-  image = Image.open(image_path)
-  return image
+  # print('load image = ', image_path)
+  # image = Image.open(image_path)
+  cv_image = cv2.imread(image_path)
+  cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+  return cv_image

@@ -1,4 +1,21 @@
 import streamlit as st 
+from app import ui
+
+
+
+
+
+MenuChoice = {
+  "Métriques" : "A",
+  "Matrices de confusions" : "B",
+}
+
+
+def display_choice(menu_choice, args):
+    return None
+
+
+
 
 
 def header():
@@ -8,7 +25,8 @@ def header():
 def display():
 
     ### Create Title
-    st.title("Analyse des performance des modèles")
+    ui.slide_header("Analyse des performance des modèles", gap=2)
+    ui.sub_menus(MenuChoice, display_choice)
    
 
       

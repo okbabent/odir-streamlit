@@ -93,6 +93,15 @@ def load_post_processed_df():
   df_OB = load_dataset.read_csv_data('df_OB.csv', 'Label', dict1) #Dataset Okba
   df_YB = load_dataset.read_csv_data('df_YB.csv', 'Diag', dict2) #Dataset Yannick
   df_TV = load_dataset.read_csv_data('df_TV.csv') #Dataset Thibaut
+  # Order column as me
+  # columns = df_OB.columns
+  # print('OB',df_OB.head())
+  # print('df_TV',df_TV.head())
+  # print('df_YB',df_YB.head())
+  # df_TV = df_TV.loc[:columns]
+  # df_YB = df_YB.loc[:columns]
+
+
   return df_OB, df_YB, df_TV
 
 
@@ -219,65 +228,67 @@ def get_keywork_table(df, side):
 
 # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def exploration1():
+  ui.add_vgap(5)
   sns.set_style('whitegrid',{'grid.linestyle': ':'})
 
-  fig, ax = plt.subplots(1,2,sharey=True,figsize=(8,3.5))
+  fig, ax = plt.subplots(1,2,sharey=True,figsize=(25,20))
   fig.subplots_adjust(wspace=0.05)
   #fig.suptitle("\nDistribution de la population en fonction de l'âge : \npopulation totale (gauche) ou répartie selon le sexe (droite)", fontsize=13, fontweight="bold", y=0.02)
-  fig.suptitle("\nDistribution de la population en fonction de l'âge", fontsize=13, fontweight="bold", y=0.02)
-  ax[0].set_title("Population totale")
-  ax[1].set_title("Répartie selon le sexe")
+  fig.suptitle("\nDistribution de la population en fonction de l'âge", fontsize=25, fontweight="bold", y=0.02)
+  ax[0].set_title("\nPopulation totale\n").set_fontsize(25)
+  ax[1].set_title("\nRépartie selon le sexe\n").set_fontsize(25)
   b=sns.kdeplot(ax=ax[0],x='Patient Age', data=df, legend=False, color='black',linewidth=2.5, fill=True, alpha=.1)
   c=sns.kdeplot(ax=ax[1],x='Patient Age', hue='Patient Sex', data=df, legend=True, palette=['m', 'c'], linewidth=2.5)
   st.pyplot(fig)
 
 # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
 def exploration2():
+  ui.add_vgap(5)
   sns.set_style('whitegrid',{'grid.linestyle': ':'})
 
-  fig, ax = plt.subplots(4,6, sharex=True, sharey=True, figsize=(18,14))
+  fig, ax = plt.subplots(4,4, sharex=True, sharey=True, figsize=(18,18))
   fig.subplots_adjust(hspace=0.4,wspace=0.06)
-  fig.suptitle("\nFigure 4. Distribution de chaque label en fonction de l'âge (gauche) et du sexe (milieu et droite)", fontsize=13, fontweight='bold', y=0.09)
+  fig.suptitle("Age-related distribution of each label based on \nthe overall population distribution (red & green) or based on the patient's sex (blue & purple)",  fontsize=18, fontweight="bold", y=0.95)
 
   ax1=sns.kdeplot(ax=ax[0, 0], x='Patient Age', hue='N', data=df, palette=['r', 'g'], linewidth=2)
   ax1.legend(labels=['Normal', 'non-Normal'])
-  ax1.text(15, 0.02,'67.4 %', fontsize=12, color='red',  weight='bold')
-  ax1.text(10, 0.01,'32.6 %', fontsize=9, color='green', weight='bold')
+  ax1.text(15, 0.02,'67.4 %', fontsize=9, color='red',  weight='bold')
+  ax1.text(10, 0.01,'32.6 %', fontsize=9, color='green',  weight='bold')
 
-  ax2=sns.kdeplot(ax=ax[0, 3], x='Patient Age', hue='D', data=df, palette=['r', 'g'], linewidth=2)
+  ax2=sns.kdeplot(ax=ax[0, 2], x='Patient Age', hue='D', data=df, palette=['r', 'g'], linewidth=2)
   ax2.legend(loc='upper left', labels=['Diabetes', 'non-Diabetes'])
-  ax2.text(15, 0.02,'67.8 %', fontsize=9, color='red', weight='bold')
-  ax2.text(10, 0.01,'32.2 %', fontsize=9, color='green', weight='bold')
+  ax2.text(15, 0.02,'67.8 %', fontsize=9, color='red',  weight='bold')
+  ax2.text(10, 0.01,'32.2 %', fontsize=9, color='green',  weight='bold')
 
   ax3=sns.kdeplot(ax=ax[1, 0], x='Patient Age', hue='O', data=df, palette=['r', 'g'], linewidth=2)
   ax3.legend(loc='upper left', labels=['Others', 'non-Others'])
-  ax3.text(15, 0.02,'72.0 %', fontsize=9, color='red', weight='bold')
-  ax3.text(10, 0.01,'28.0 %', fontsize=9, color='green', weight='bold')
+  ax3.text(15, 0.02,'72.0 %', fontsize=9, color='red',  weight='bold')
+  ax3.text(10, 0.01,'28.0 %', fontsize=9, color='green',  weight='bold')
 
-  ax4=sns.kdeplot(ax=ax[1, 3], x='Patient Age', hue='G', data=df, palette=['r', 'g'], linewidth=2)
+  ax4=sns.kdeplot(ax=ax[1, 2], x='Patient Age', hue='G', data=df, palette=['r', 'g'], linewidth=2)
   ax4.legend(loc='upper left', labels=['Glaucoma', 'non-Glaucoma'])
-  ax4.text(15, 0.02,'93.9 %', fontsize=9, color='red', weight='bold')
-  ax4.text(50, 0.004,'6.1 %', fontsize=9, color='green', weight='bold')
+  ax4.text(15, 0.02,'93.9 %', fontsize=9, color='red',  weight='bold')
+  ax4.text(50, 0.004,'6.1 %', fontsize=9, color='green',  weight='bold')
 
   ax5=sns.kdeplot(ax=ax[2, 0], x='Patient Age', hue='C', data=df, palette=['r', 'g'], linewidth=2)
   ax5.legend(loc='upper left', labels=['Cataract', 'non-Cataract'])
-  ax5.text(15, 0.02,'93.9 %', fontsize=9, color='red', weight='bold')
-  ax5.text(50, 0.004,'6.1 %', fontsize=9, color='green', weight='bold')
+  ax5.text(15, 0.02,'93.9 %', fontsize=9, color='red',  weight='bold')
+  ax5.text(50, 0.004,'6.1 %', fontsize=9, color='green',  weight='bold')
 
-  ax6=sns.kdeplot(ax=ax[2, 3], x='Patient Age', hue='M', data=df, palette=['r', 'g'], linewidth=2)
+  ax6=sns.kdeplot(ax=ax[2, 2], x='Patient Age', hue='M', data=df, palette=['r', 'g'], linewidth=2)
   ax6.legend(loc='upper left', labels=['Myopia', 'non-Myopia'])
-  ax6.text(15, 0.02,'95.0 %', fontsize=9, color='red', weight='bold')
-  ax6.text(50, 0.004,'5.0 %', fontsize=9, color='green', weight='bold')
+  ax6.text(15, 0.02,'95.0 %', fontsize=9, color='red',  weight='bold')
+  ax6.text(50, 0.004,'5.0 %', fontsize=9, color='green',  weight='bold')
 
   ax7=sns.kdeplot(ax=ax[3, 0], x='Patient Age', hue='A', data=df, palette=['r', 'g'], linewidth=2)
   ax7.legend(loc='upper left', labels=['AMD', 'non-AMD'])
-  ax7.text(10, 0.015,'95.3 %', fontsize=9, color='red', weight='bold')
-  ax7.text(50, 0.004,'4.7 %', fontsize=9, color='green', weight='bold')
+  ax7.text(10, 0.015,'95.3 %', fontsize=9, color='red',  weight='bold')
+  ax7.text(50, 0.004,'4.7 %', fontsize=9, color='green',  weight='bold')
 
-  ax8=sns.kdeplot(ax=ax[3, 3], x='Patient Age', hue='H', data=df, palette=['r', 'g'], linewidth=2)
+  ax8=sns.kdeplot(ax=ax[3, 2], x='Patient Age', hue='H', data=df, palette=['r', 'g'], linewidth=2)
   ax8.legend(loc='upper left', labels=['Hypertension', 'non-Hypertension'])
-  ax8.text(15, 0.02,'97.1 %', fontsize=9, color='red', weight='bold')
-  ax8.text(50, 0.004,'2.9 %', fontsize=9, color='green', weight='bold')
+  ax8.text(15, 0.02,'97.1 %', fontsize=9, color='red',  weight='bold')
+  ax8.text(50, 0.004,'2.9 %', fontsize=9, color='green',  weight='bold')
 
   ax1.set_title("General population \n('Normal' label)", fontdict = {'fontweight':'semibold'})
   ax2.set_title("General population \n('Diabetes' label)", fontdict = {'fontweight':'semibold'})
@@ -288,90 +299,74 @@ def exploration2():
   ax7.set_title("General population \n('AMD' label)", fontdict = {'fontweight':'semibold'})
   ax8.set_title("General population \n('Hypertension' label)", fontdict = {'fontweight':'semibold'})
 
-  ax11=sns.kdeplot(ax=ax[0, 1], x='Patient Age', hue='Patient Sex', data=df[df.N == 1], legend=True, palette=['c', 'm'], linewidth=2, warn_singular=False)
-  ax21=sns.kdeplot(ax=ax[0, 4], x='Patient Age', hue='Patient Sex', data=df[df.D == 1], legend=True, palette=['c', 'm'], linewidth=2, warn_singular=False)
-  ax31=sns.kdeplot(ax=ax[1, 1], x='Patient Age', hue='Patient Sex', data=df[df.O == 1], legend=True, palette=['c', 'm'], linewidth=2, warn_singular=False)
-  ax41=sns.kdeplot(ax=ax[1, 4], x='Patient Age', hue='Patient Sex', data=df[df.G == 1], legend=True, palette=['m', 'c'], linewidth=2, warn_singular=False)
-  ax51=sns.kdeplot(ax=ax[2, 1], x='Patient Age', hue='Patient Sex', data=df[df.C == 1], legend=True, palette=['m', 'c'], linewidth=2, warn_singular=False)
-  ax61=sns.kdeplot(ax=ax[2, 4], x='Patient Age', hue='Patient Sex', data=df[df.M == 1], legend=True, palette=['m', 'c'], linewidth=2, warn_singular=False)
-  ax71=sns.kdeplot(ax=ax[3, 1], x='Patient Age', hue='Patient Sex', data=df[df.A == 1], legend=True, palette=['c', 'm'], linewidth=2, warn_singular=False)
-  ax81=sns.kdeplot(ax=ax[3, 4], x='Patient Age', hue='Patient Sex', data=df[df.H == 1], legend=True, palette=['m', 'c'], linewidth=2, warn_singular=False)
-                  
-  ax11.title.set_text('Normal - per sex')
-  ax21.title.set_text('Diabetes - per sex')
-  ax31.title.set_text('Others - per sex')
-  ax41.title.set_text('Glaucoma - per sex')
-  ax51.title.set_text('Cataract - per sex')
-  ax61.title.set_text('Myopia - per sex')
-  ax71.title.set_text('AMD - per sex')
-  ax81.title.set_text('Hypertension - per sex')
+  ax11=sns.kdeplot(ax=ax[0, 1], x='Patient Age', hue='Patient Sex', data=df[df.N == 1], legend=True, palette=['c', 'm'], linewidth=2)
+  ax21=sns.kdeplot(ax=ax[0, 3], x='Patient Age', hue='Patient Sex', data=df[df.D == 1], legend=True, palette=['c', 'm'], linewidth=2)
+  ax31=sns.kdeplot(ax=ax[1, 1], x='Patient Age', hue='Patient Sex', data=df[df.O == 1], legend=True, palette=['c', 'm'], linewidth=2)
+  ax41=sns.kdeplot(ax=ax[1, 3], x='Patient Age', hue='Patient Sex', data=df[df.G == 1], legend=True, palette=['m', 'c'], linewidth=2)
+  ax51=sns.kdeplot(ax=ax[2, 1], x='Patient Age', hue='Patient Sex', data=df[df.C == 1], legend=True, palette=['m', 'c'], linewidth=2)
+  ax61=sns.kdeplot(ax=ax[2, 3], x='Patient Age', hue='Patient Sex', data=df[df.M == 1], legend=True, palette=['m', 'c'], linewidth=2)
+  ax71=sns.kdeplot(ax=ax[3, 1], x='Patient Age', hue='Patient Sex', data=df[df.A == 1], legend=True, palette=['c', 'm'], linewidth=2)
+  ax81=sns.kdeplot(ax=ax[3, 3], x='Patient Age', hue='Patient Sex', data=df[df.H == 1], legend=True, palette=['m', 'c'], linewidth=2)
 
-  ax10=sns.kdeplot(ax=ax[0, 2], x='Patient Age', hue='Patient Sex', data=df[df.N == 0], legend=True, palette=['m', 'c'], linewidth=2, alpha=0.65, warn_singular=False)
-  ax20=sns.kdeplot(ax=ax[0, 5], x='Patient Age', hue='Patient Sex', data=df[df.D == 0], legend=True, palette=['m', 'c'], linewidth=2, alpha=0.65, warn_singular=False)
-  ax30=sns.kdeplot(ax=ax[1, 2], x='Patient Age', hue='Patient Sex', data=df[df.O == 0], legend=True, palette=['m', 'c'], linewidth=2, alpha=0.65, warn_singular=False)
-  ax40=sns.kdeplot(ax=ax[1, 5], x='Patient Age', hue='Patient Sex', data=df[df.G == 0], legend=True, palette=['m', 'c'], linewidth=2, alpha=0.65, warn_singular=False)
-  ax50=sns.kdeplot(ax=ax[2, 2], x='Patient Age', hue='Patient Sex', data=df[df.C == 0], legend=True, palette=['c', 'm'], linewidth=2, alpha=0.65, warn_singular=False)
-  ax60=sns.kdeplot(ax=ax[2, 5], x='Patient Age', hue='Patient Sex', data=df[df.M == 0], legend=True, palette=['m', 'c'], linewidth=2, alpha=0.65, warn_singular=False)
-  ax70=sns.kdeplot(ax=ax[3, 2], x='Patient Age', hue='Patient Sex', data=df[df.A == 0], legend=True, palette=['m', 'c'], linewidth=2, alpha=0.65, warn_singular=False)
-  ax80=sns.kdeplot(ax=ax[3, 5], x='Patient Age', hue='Patient Sex', data=df[df.H == 0], legend=True, palette=['m', 'c'], linewidth=2, alpha=0.65, warn_singular=False)
-                  
-  ax10.title.set_text('non-Normal - per sex')
-  ax20.title.set_text('non-Diabetes - per sex')
-  ax30.title.set_text('non-Others - per sex')
-  ax40.title.set_text('non-Glaucoma - per sex')
-  ax50.title.set_text('non-Cataract - per sex')
-  ax60.title.set_text('non-Myopia - per sex')
-  ax70.title.set_text('non-AMD - per sex')
-  ax80.title.set_text('non-Hypertension - per sex')
+  ax11.title.set_text("Sex-related \n('Normal' label)")
+  ax21.title.set_text("Sex-related \n('Diabetes' label)")
+  ax31.title.set_text("Sex-related \n('Others' label)")
+  ax41.title.set_text("Sex-related \n('Glaucoma' label)")
+  ax51.title.set_text("Sex-related \n('Cataract' label)")
+  ax61.title.set_text("Sex-related \n('Myopia' label)")
+  ax71.title.set_text("Sex-related \n('AMD' label)")
+  ax81.title.set_text("Sex-related \n('Hypertension' label)")
+ 
   st.pyplot(fig)
 
-# @st.cache(suppress_st_warning=True, allow_output_mutation=True)
-def exploration3():
-  st.code(f'Original - nombre de ligne : {df.shape[0]}\n'
-  f'OB - nombre de ligne :  {df_OB.shape[0]}\n'
-  f'TV - nombre de ligne :  {df_TV.shape[0]}\n'
-  f'YB - nombre de ligne :  {df_YB.shape[0]}')
+# # @st.cache(suppress_st_warning=True, allow_output_mutation=True)
+# def exploration4():
+#   st.code(f'Original - nombre de ligne : {df.shape[0]}\n'
+#   f'OB - nombre de ligne :  {df_OB.shape[0]}\n'
+#   f'TV - nombre de ligne :  {df_TV.shape[0]}\n'
+#   f'YB - nombre de ligne :  {df_YB.shape[0]}')
 
  
-  # df_OB['diagnosis'] = df_OB['Label'].replace(dict)
-  # df_YB['diagnosis'] = df_YB['Diag'].replace(dict)
-  sns.set_style('whitegrid',{'grid.linestyle': ':'})
+#   # df_OB['diagnosis'] = df_OB['Label'].replace(dict)
+#   # df_YB['diagnosis'] = df_YB['Diag'].replace(dict)
+#   sns.set_style('whitegrid',{'grid.linestyle': ':'})
 
-  fig, ax = plt.subplots(1,3, sharey=True,figsize=(10,3), squeeze=False)
-  fig.subplots_adjust(wspace=0.05)
+#   fig, ax = plt.subplots(1,3, sharey=True,figsize=(10,3), squeeze=False)
+#   fig.subplots_adjust(wspace=0.05)
 
-  a=sns.countplot(ax=ax[0,0], x='diagnosis', data=df_OB)
-  a.tick_params(axis='x', labelrotation=90)
-  b=sns.countplot(ax=ax[0,1], x='diagnosis', data=df_YB)
-  b.tick_params(axis='x', labelrotation=90)
-  c=sns.countplot(ax=ax[0,2], x='diagnosis', data=df_TV)
-  c.tick_params(axis='x',labelrotation=90)
+#   a=sns.countplot(ax=ax[0,0], x='diagnosis', data=df_OB)
+#   a.tick_params(axis='x', labelrotation=90)
+#   b=sns.countplot(ax=ax[0,1], x='diagnosis', data=df_YB)
+#   b.tick_params(axis='x', labelrotation=90)
+#   c=sns.countplot(ax=ax[0,2], x='diagnosis', data=df_TV)
+#   c.tick_params(axis='x',labelrotation=90)
 
 
-  ax[0,0].set_title('OB')
-  ax[0,0].set_xlabel('')
-  ax[0,0].set_ylabel('')
+#   ax[0,0].set_title('OB')
+#   ax[0,0].set_xlabel('')
+#   ax[0,0].set_ylabel('')
 
-  ax[0,1].set_title('YB')
-  ax[0,1].set_xlabel('')
-  ax[0,1].set_ylabel('')
+#   ax[0,1].set_title('YB')
+#   ax[0,1].set_xlabel('')
+#   ax[0,1].set_ylabel('')
 
-  ax[0,2].set_title('TV')
-  ax[0,2].set_xlabel('')
-  ax[0,2].set_ylabel('')
+#   ax[0,2].set_title('TV')
+#   ax[0,2].set_xlabel('')
+#   ax[0,2].set_ylabel('')
 
-  st.pyplot(fig)
+#   st.pyplot(fig)
 
   
-def exploration4():
-
+def exploration3():
+  
+  ui.add_vgap(5)
   # df_OB = load_dataset.read_csv_data('df_OB.csv') #Dataset Okba
   # df_YB = load_dataset.read_csv_data('df_YB.csv') #Dataset Yannick
   # df_TV = load_dataset.read_csv_data('df_TV.csv') #Dataset Thibaut
   # name of the sectors
-  sectors = df_OB['diagnosis'].value_counts().index
-  sectors2 = df_YB['diagnosis'].value_counts().index  
-  sectors3 = df_TV['diagnosis'].value_counts().index 
+  sectors = df_OB['diagnosis'].value_counts().sort_index().index
+  sectors2 = df_YB['diagnosis'].value_counts().sort_index().index  
+  sectors3 = df_TV['diagnosis'].value_counts().sort_index().index 
 
   # % tage weightage of the sectors
   percentages = df_OB['diagnosis'].value_counts(normalize=True).round(3)*100
@@ -412,8 +407,11 @@ def exploration4():
   y = 0
     
   # radius of the glyphs
-  radius = 1
-    
+  # radius = 1
+  # sectors.sort_values()
+  # sectors2.sort_values()
+  # sectors3.sort_values()
+
   # color of the wedges
   color=Category20c[len(sectors)]
   color2=Category20c[len(sectors2)]
@@ -459,48 +457,48 @@ def exploration4():
       graph3.legend.click_policy = 'hide'
 
   # To display graphs separately : 
-  #show(row(graph, graph2, graph3))  
-  c1 ,_, c2,_, c3,_, c4 = st.columns([2,1,2,1,2,1,2])
-  with c1:
-    st.bokeh_chart(graph)
-  with c2:
-    st.bokeh_chart(graph2)
-  with c3:
-    st.bokeh_chart(graph3)
-  with c4: 
-    OB = pd.DataFrame(df_OB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
-    OB = OB.rename({'diagnosis': 'OB'}, axis=1)
+  st.bokeh_chart(row(graph, graph2, graph3))  
+  
+  # c1 ,_, c2,_, c3,_, c4 = st.columns([2,1,2,1,2,1,2])
+  # with c1:
+  #   st.bokeh_chart(graph)
+  # with c2:
+  #   st.bokeh_chart(graph2)
+  # with c3:
+  #   st.bokeh_chart(graph3)
+  # with c4: 
+  #   OB = pd.DataFrame(df_OB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+  #   OB = OB.rename({'diagnosis': 'OB'}, axis=1)
 
-    YB = pd.DataFrame(df_YB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
-    YB = YB.rename({'diagnosis': 'YB'}, axis=1)
+  #   YB = pd.DataFrame(df_YB['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+  #   YB = YB.rename({'diagnosis': 'YB'}, axis=1)
 
-    TV = pd.DataFrame(df_TV['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
-    TV = TV.rename({'diagnosis': 'TV'}, axis=1)
+  #   TV = pd.DataFrame(df_TV['diagnosis'].value_counts(normalize=True).head(14).round(5)*100)
+  #   TV = TV.rename({'diagnosis': 'TV'}, axis=1)
 
-    st.dataframe(pd.concat([OB, YB, TV], axis=1))
+  #   st.dataframe(pd.concat([OB, YB, TV], axis=1))
     
 
   
 
-def eye_fundus_image(diag_label):
-  fig, ax = plt.subplots(1,2,figsize=(10,10))
-  fig.set_facecolor('black')
-  fig.tight_layout(pad=2.0)
-  alpha = 1
-  fig.set_alpha(alpha)
+def eye_fundus_image(diag_label, figsize=(10,10)):
+ 
   images = utils.list_images(diag_label)
 
-  if len(images) == 2:
-    left_img = utils.load_image(diag_label, images[0])
-    right_img = utils.load_image(diag_label, images[1])
-    ax[0].imshow(left_img) 
-    ax[0].set_title(images[0][:-4]).set_color('white')
-    ax[1].imshow(right_img) 
-    ax[1].set_title(images[1][:-4]).set_color('white')
-    ax[0].grid(False)
-    ax[1].grid(False)
-    ax[0].axis('off')
-    ax[1].axis('off')
+  if len(images) >= 4:
+    fig, axs = plt.subplots(2,2,figsize=figsize)
+    # print(len(ax))
+    fig.set_facecolor('black')
+    fig.tight_layout(pad=2.0)
+    for i, ax in enumerate(axs.flat):
+      img = utils.load_image(diag_label, images[i])
+      if img.any():
+        ax.imshow(img) 
+        ax.set_title(images[i][:-4]).set_color('white')
+        ax.grid(False)
+        ax.axis('off')
+      else:
+        print("impossible de charger l'image:",  images[i])
     st.pyplot(fig)
 
 def eye_fundus_image_tab(tab, diag_label):
@@ -547,7 +545,7 @@ def exploration_tab(tab, fn, in_column=True):
       fn()
 
 def explorations():
-  explorations = [f'Exporation - {e+1}' for e in range(4)]
+  explorations = [f'Exporation - {e+1}' for e in range(3)]
   tabs = st.tabs(explorations)
   for i, tab in enumerate(tabs):
     exploration_tab(tab, globals()[f"exploration{i+1}"], i != len(explorations)-1)

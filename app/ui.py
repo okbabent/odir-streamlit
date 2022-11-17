@@ -145,18 +145,34 @@ def colored_header(label, color=None, description=None):
     if description:
         st.caption(description)
 
+def add_vgap(gap):
+    if gap:
+        for i in range(gap):
+            st.markdown('')
+
 def slide_header(title, gap=None, description=None):
     c0, _, c1 = st.columns([1,1,15])
     with c0:
-      st.image("assets/datascientest-logo.png")
+        st.image("assets/datascientest-logo.png")
     with c1:
-      st.markdown(f"<h1 style='text-align: center;'>{title}</h1>", unsafe_allow_html=True)
-      if gap:
-        for i in range(gap):
-            st.markdown('')
-      if description:
-        color1 = color("blue-green-60")
-        st.markdown(f"<h2 style='text-align: center; color: {color1}'>{description}<h2>", unsafe_allow_html=True)
+        if gap:
+            if type(gap) == tuple:
+                if len(gap) > 0:
+                    add_vgap(gap[0])
+            
+        st.markdown(f"<h1 style='text-align: center;'>{title}</h1>", unsafe_allow_html=True)
+        if gap:
+            if type(gap) == tuple:
+                if len(gap) > 1:
+                    add_vgap(gap[1])
+            else:
+                add_vgap(gap)
+        if description:
+            color1 = color("blue-green-60")
+            st.markdown(f"<h2 style='text-align: center; color: {color1}'>{description}<h2>", unsafe_allow_html=True)
+    if type(gap) == tuple:
+        if len(gap) > 2:
+            add_vgap(gap[2])
 
 
 # From: https://discuss.streamlit.io/t/href-on-image/9693/3

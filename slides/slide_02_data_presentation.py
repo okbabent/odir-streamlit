@@ -83,7 +83,7 @@ def choice_value(x):
 def display():
 
     ### Create Title
-    ui.slide_header('Présentation des données', gap=None, description='Description & information')
+    ui.slide_header('Présentation des données', gap=(None,None,10), description='Description & information')
   
     df = load_dataset.read_odir_data()
     ui.sub_menus(MenuChoice, display_choice, dataset=df)
