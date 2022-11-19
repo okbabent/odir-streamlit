@@ -200,7 +200,10 @@ def linked_image(image, target_url):
 
 def title_label(txt):
     color1 = color("custom-100")
-    return f"<h3 style='text-align: center; color: {color1};'{txt}</h3>"
+    return f"<h3 style='text-align: center; font-style: bold; color: {color1};'>{txt}</h3>"
+def subtitle_label(txt):
+    color1 = color("custom-100")
+    return f"<h4 style='text-align: center; font-style: italic; color: {color1};'>{txt}</h4>"
 
 def info(txt):
     #c = color("blue-green-60")

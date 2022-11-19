@@ -22,8 +22,8 @@ def get_working_directory():
   return os.getcwd()
 
 def get_directory(folder_name):
-  return folder_name
-  #os.path.join(get_working_directory(), folder_name);
+  # return folder_name
+  return os.path.join(get_working_directory(), folder_name);
 
 def get_data_directory():
   return get_directory('data');
@@ -31,7 +31,7 @@ def get_data_directory():
 def get_assets_directory():
   return get_directory('assets');
 
-def get_ressource(res_folder, res_name):
+def get_resource(res_folder, res_name):
   s = os.path.join(get_directory(res_folder), res_name);
   #print(s)
   return s

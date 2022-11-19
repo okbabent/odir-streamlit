@@ -10,60 +10,53 @@ from wordcloud import WordCloud
 from PIL import Image
 from app import utils
 from app import ui
-#from matplotlib.bezier import find_r_to_boundary_of_closedpath
-from bokeh.plotting import figure, show, output_notebook
+from bokeh.plotting import figure
 from bokeh.palettes import Category20c
-from bokeh.palettes import Paired
-from bokeh.models import LabelSet, ColumnDataSource, HoverTool
-from bokeh.layouts import column
 from bokeh.layouts import row
-from bokeh.models import Panel, Tabs
-from enum import Enum
-from typing import List
 import math
 
 
-st.markdown(
-    """
-<style>
-.reportview-container .markdown-text-container {
-    font-family: monospace;
-}
-.sidebar .sidebar-content {
-    background-image: linear-gradient(#2e7bcf,#2e7bcf);
-    color: white;
-}
-.Widget>label {
-    color: white;
-    font-family: monospace;
-}
-[class^="st-b"]  {
-    color: red;
-    font-family: monospace;
-}
-.st-bb {
-    background-color: transparent;
-}
-.st-at {
-    background-color: #0c0080;
-}
-.st-af {
-  font-size: 1.5rem;
-}
-footer {
-    font-family: monospace;
-}
-.reportview-container .main footer, .reportview-container .main footer a {
-    color: #0c0080;
-}
-header .decoration {
-    background-image: none;
-}
+# st.markdown(
+#     """
+# <style>
+# .reportview-container .markdown-text-container {
+#     font-family: monospace;
+# }
+# .sidebar .sidebar-content {
+#     background-image: linear-gradient(#2e7bcf,#2e7bcf);
+#     color: white;
+# }
+# .Widget>label {
+#     color: white;
+#     font-family: monospace;
+# }
+# [class^="st-b"]  {
+#     color: red;
+#     font-family: monospace;
+# }
+# .st-bb {
+#     background-color: transparent;
+# }
+# .st-at {
+#     background-color: #0c0080;
+# }
+# .st-af {
+#   font-size: 1.5rem;
+# }
+# footer {
+#     font-family: monospace;
+# }
+# .reportview-container .main footer, .reportview-container .main footer a {
+#     color: #0c0080;
+# }
+# header .decoration {
+#     background-image: none;
+# }
 
-</style>
-""",
-    unsafe_allow_html=True,
-)
+# </style>
+# """,
+#     unsafe_allow_html=True,
+# )
 
 DEFAULT_NUMBER_OF_ROWS = 5
 DEFAULT_NUMBER_OF_COLUMNS = 5
@@ -456,7 +449,9 @@ def exploration3():
       graph3.legend.location = 'center' 
       graph3.legend.click_policy = 'hide'
 
-  # To display graphs separately : 
+  # To display graphs separately :
+  # _,c,_ = st.columns([1,2,1])
+  # with c:
   st.bokeh_chart(row(graph, graph2, graph3))  
   
   # c1 ,_, c2,_, c3,_, c4 = st.columns([2,1,2,1,2,1,2])
@@ -507,26 +502,7 @@ def eye_fundus_image_tab(tab, diag_label):
     with c:
       eye_fundus_image(diag_label)
  
-# class ImageSam
-# def filter_df(x, diag_labels, label):
-#   f = x[label] == 1
-#   if not f:
-#     return False
-#   o_labels = [a for a in diag_labels if a != label]
-#   for i in o_labels:
-#     if x[i] != 0:
-#       return False
-#   return True
 
-# def imgae_samples(df, label, samples=8):
-#   diag_labels = ['Normal', 'Diabetes', 'Glaucoma', 'Cataract', 'AMD', 'Hypertension', 'Myopia',	'Others']
-#   newdf = df[df.apply(lambda x: filter_df(x, diag_labels, label), axis=1)]
-#   newdf = newdf.sample(samples).reset_index()
-#   return newdf
-
-# df_diags = [sample_df(df_clean, lab) for lab in diag_labels]
-# for d in df_diags:
-#   display(d.head())
 
 def eye_fundus():
   diagnosis_labels = ['Normal', 'Diabetes', 'Glaucoma', 'Cataract', 'AMD', 'Hypertension', 'Myopia',	'Others']
