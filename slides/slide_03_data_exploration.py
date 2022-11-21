@@ -497,7 +497,7 @@ def eye_fundus_image(diag_label, figsize=(10,10)):
     fig.set_facecolor('black')
     fig.tight_layout(pad=2.0)
     for i, ax in enumerate(axs.flat):
-      img = utils.load_image(diag_label, images[i])
+      img = load_image(diag_label, images[i])
       if img.any():
         ax.imshow(img) 
         ax.set_title(images[i][:-4]).set_color('white')
