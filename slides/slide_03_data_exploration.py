@@ -14,8 +14,19 @@ from bokeh.plotting import figure
 from bokeh.palettes import Category20c
 from bokeh.layouts import row
 import math
+import cv2
 
 
+
+
+@st.cache(suppress_st_warning=True)
+def load_image(path, name):
+  image_path = f'data/{path}/{name}'
+  # print('load image = ', image_path)
+  # image = Image.open(image_path)
+  cv_image = cv2.imread(image_path)
+  cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
+  return cv_image
 # st.markdown(
 #     """
 # <style>
@@ -450,7 +461,7 @@ def exploration3():
       graph3.legend.click_policy = 'hide'
 
   # To display graphs separately :
-  _,c,_ = st.columns([1,1,1])
+  _,c,_ = st.columns([1,4,1])
   with c:
     st.bokeh_chart(row(graph, graph2, graph3))  
   

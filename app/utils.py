@@ -48,12 +48,5 @@ def list_images(diag_label):
   files = [f for f in os.listdir(source_folder) if f[-3:] == 'jpg' and os.path.isfile(os.path.join(source_folder, f))]
   return files
 
-@st.cache(suppress_st_warning=True)
-def load_image(path, name):
-  image_path = f'data/{path}/{name}'
-  # print('load image = ', image_path)
-  # image = Image.open(image_path)
-  cv_image = cv2.imread(image_path)
-  cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
-  return cv_image
+
 
