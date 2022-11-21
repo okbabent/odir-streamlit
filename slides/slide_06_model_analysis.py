@@ -196,7 +196,7 @@ class Inference(NamedTuple):
             (id, prediction, probability)
         """
         report_progress_func(
-            f"Chargement du model {self.name}... (Merci de patienter, la première fois, La première fois, cela peut prendre un peu de temps!"
+            f"Chargement du model {self.name}... (Merci de patienter, La première fois, cela peut prendre un peu de temps!"
             "minutes)",
             10,
         )
@@ -312,6 +312,9 @@ def upload_image_and_predict(selected_model):
                 st.markdown(ui.title_label(t), unsafe_allow_html=True)
                 predictions_chart = selected_model.to_predictions_chart(predictions)
                 st.pyplot(predictions_chart)
+        else:
+            st.markdown(ui.title_label('Impossible de charger le modèle ou faire des prédictions', 'red'), unsafe_allow_html=True)
+            #predictions_chart = selected_model.to_predictions_chart(predictions)
         # st.altair_chart(predictions_chart)
 
 

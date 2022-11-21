@@ -10,7 +10,8 @@ nltk
 openpyxl
 streamlit-option-menu
 Pillow
-tensorflow
+#tensorflow
+tensorflow-cpu
 streamlit
 bokeh==2.4.3
 google-cloud-storage
