@@ -29,10 +29,11 @@ def display_choice(menu_choice, args):
                 st.markdown(
                     """
                 
-                    - ## Plusieurs architecture de modèles testés VGG16, VGG19, RESNET50, INCEPTION, XCEPTION
+                    - ## Plusieurs architectures de modèles testés VGG16, VGG19, RESNET50, INCEPTION, XCEPTION
                     - ## Plusieurs tentives pour le choix des hperparamères
                     - ## Bon apprentissage des modèles avec de bons résultats (F1-score >0.96)
                     - ## Matrice de confusion montre mauvaise distinction entre les classes Myopie et Glaucome
+
                     """
                 )
         return choice_a
@@ -46,6 +47,7 @@ def display_choice(menu_choice, args):
                     - ## Intérêt d’une segmentation d’image avec l’appui d’experts en analyse d’image et d’experts médicaux afin de déterminer les zones d’intérêt à analyser pour la classification
                     - ## Intérêt d’une validation de la représentativité de la dataset par des experts médicaux (distribution des populations, représentation de chaque classe …) pour évaluer une potentielle généralisation de nos modèles.
                     - ## Intérêt d’une validation sur les images tests ou d’autres images pour valider nos modèles
+                    - ## Il est indispensabale d'avoir accès à des ressources avec GPU pour traiter ce type de sujets..
                     """
                 )
         return choice_b
