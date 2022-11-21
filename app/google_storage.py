@@ -3,6 +3,7 @@ from google.oauth2 import service_account
 from google.cloud import storage
 import traceback
 import logging
+import os
 
 credentials = service_account.Credentials.from_service_account_info(st.secrets["gcp_service_account"])
 client = storage.Client(credentials=credentials)
@@ -30,6 +31,11 @@ def connect_google_strorage():
     # print(content)
 st.experimental_memo(ttl=600)
 def load_model(h5_name):
+    target = f'./{h5_name}'
+    if os.path.isfile(target):
+        print(f'model file already exist')
+        return target
+
     bucket_name = "odir-datascientest"
     file_path = f'model/{h5_name}'
     print('loading from bucket ----')
@@ -38,7 +44,6 @@ def load_model(h5_name):
     #target = f'./data/storage_target/{h5_name}'
     target = f'./{h5_name}'
     logging.info(f'download_to_filename to  {target} ')
-    
     try:
         bucket.blob(file_path).download_to_filename(target)
         logging.info(f'end bucket.blob')
