@@ -33,14 +33,21 @@ def load_model(h5_name):
     bucket_name = "odir-datascientest"
     file_path = f'model/{h5_name}'
     print('loading from bucket ----')
+    logging.info(f'loading {file_path} from bucket {bucket_name} ---------')
     bucket = client.bucket(bucket_name)
-    target = f'./data/storage_target/{h5_name}'
+    #target = f'./data/storage_target/{h5_name}'
+    target = f'./{h5_name}'
+    logging.info(f'download_to_filename to  {target} ')
+    
     try:
         bucket.blob(file_path).download_to_filename(target)
+        logging.info(f'end bucket.blob')
     except Exception as e:
         logging.error(traceback.format_exc())
         print('exception ', e)
         target = ''
+
+    logging.info(f'end loading from bucket ----')
     print('end loading from bucket ----')
     return target
 
