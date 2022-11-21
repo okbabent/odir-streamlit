@@ -123,8 +123,8 @@ right_diag_keys_str = ','.join(right_diag_keys)
 #@st.cache(suppress_st_warning=True)
 def word_cloud():
 
-  mask_left = np.array(Image.open(utils.get_ressource('assets', 'Leftbw2.jpg')))
-  mask_right = np.array(Image.open(utils.get_ressource('assets', 'Rightbw2.jpg')))
+  mask_left = np.array(Image.open(utils.get_resource('assets', 'Leftbw2.jpg')))
+  mask_right = np.array(Image.open(utils.get_resource('assets', 'Rightbw2.jpg')))
   wc_left = WordCloud(background_color="black", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_left)
   wc_right = WordCloud(background_color="black", max_words=1000, max_font_size=90, collocations=False, random_state=42, mask=mask_right)
   fig, ax = plt.subplots(1,2,figsize=(15,10))
@@ -450,9 +450,9 @@ def exploration3():
       graph3.legend.click_policy = 'hide'
 
   # To display graphs separately :
-  # _,c,_ = st.columns([1,2,1])
-  # with c:
-  st.bokeh_chart(row(graph, graph2, graph3))  
+  _,c,_ = st.columns([1,1,1])
+  with c:
+    st.bokeh_chart(row(graph, graph2, graph3))  
   
   # c1 ,_, c2,_, c3,_, c4 = st.columns([2,1,2,1,2,1,2])
   # with c1:
@@ -531,8 +531,8 @@ def explorations():
 
 MenuChoice = {
   "Diagnostic keywords" : "A",
-  "Nuage de mots clés (Diagnostics)" : "B",
-  "Exploration" : "C",
+  "Nuage de mots clés" : "B",
+  "Data Viz" : "C",
   "Exemple d'images de fond d'oeil" : "D"
 }
 
@@ -559,6 +559,7 @@ def display_choice(menu_choice, args):
 
   if menu_choice == 'B':
     def choice_b():
+      ui.add_vgap(10)
       word_cloud()
       st.markdown('#')
       ui.info("Prédominance des fonds d'oeil normaux à gauche comme à droite")

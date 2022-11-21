@@ -6,11 +6,21 @@ from streamlit_option_menu import option_menu
 import streamlit.components.v1 as html
 from  PIL import Image
 import numpy as np
-#import slides as sd
+
 
 
 #from streamit_experiments import streamlit_experiments
 # from demo_stream_titanic import demo_streamlit # Basic ML web app with stremlit
+
+
+
+
+
+
+# Print results.
+# for line in content.strip().split("\n"):
+#     name, pet = line.split(",")
+#     st.write(f"{name} has a :{pet}:")
 
 def main():
     # Parameters
@@ -22,7 +32,11 @@ def main():
     layout="wide",
     initial_sidebar_state="collapsed",)
 
-    #print(glob.glob("app/slides/slide_*.py"))
+    # connect_google_strorage()
+  
+
+  
+   
 
     slide_files = sorted(glob.glob("slides/slide_*.py"))
     #print(slide_files)

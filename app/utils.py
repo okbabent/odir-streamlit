@@ -56,3 +56,4 @@ def load_image(path, name):
   cv_image = cv2.imread(image_path)
   cv_image = cv2.cvtColor(cv_image, cv2.COLOR_BGR2RGB)
   return cv_image
+

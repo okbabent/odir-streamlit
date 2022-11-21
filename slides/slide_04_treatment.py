@@ -136,15 +136,22 @@ def display_choice(menu_choice, args):
 
     if menu_choice == 'C':
         def choice_c():
-            _ , c= st.columns([1,10])
+            _ , c, _= st.columns([1,6,1])
             with c:
-                svg = utils.get_resource('assets', 'processing-ima.drawio.png')
-                st.image(svg)
+                svg = utils.get_resource('assets', 'processing-images.png')
+                img_title = ui.title_label('Processus de traitement et de générationd es données images')
+                st.markdown(img_title, unsafe_allow_html=True)
+                ui.add_vgap(2)
+                st.image(svg, use_column_width=True)
                 ui.add_vgap(5)
             _, c1, c2,_ = st.columns([1,2,2,1])
             with c1:
+                img_title = ui.title_label('Exemple de données augmentées')
+                st.markdown(img_title, unsafe_allow_html=True)
                 st.image(utils.get_resource('assets', 'post-process-img.png'))
             with c2:
+                img_title = ui.title_label('Exemple de données augmentées')
+                st.markdown(img_title, unsafe_allow_html=True)
                 st.image(utils.get_resource('assets', 'post-process-img-2.png'))
         return choice_c
 
@@ -153,7 +160,7 @@ def header():
 
 def display():
     ### Create Title
-    ui.slide_header("Traitement des données", gap=(5,15))
+    ui.slide_header("Traitement des données", gap=(5,5,None))
     ui.sub_menus(MenuChoice, display_choice)
    
    

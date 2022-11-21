@@ -4,3 +4,5 @@ odirenv
 images
 app/streamlit_app_bak.py.txt
 slides/slide_09_debug.py
+secrets.toml
+*.h5
