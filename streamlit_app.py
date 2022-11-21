@@ -27,8 +27,9 @@ def main():
     STARTING_SLIDE = 0
 
     st.set_page_config(
-    page_title="ODIR 2019",
-    page_icon="https://streamlit.io/favicon.svg",
+    page_title="ODIR-DS-FEV2022",
+    # page_icon="https://streamlit.io/favicon.svg",
+    page_icon="https://storage.cloud.google.com/odir-datascientest/images/eye-show-svgrepo-com.svg",
     layout="wide",
     initial_sidebar_state="collapsed",)
 

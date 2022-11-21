@@ -17,6 +17,7 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.applications import (vgg19, xception)
 from tempfile import NamedTemporaryFile
+from app import google_storage
 # from tf.keras.preprocessing.image import img_to_array, load_img
 # import tf.keras.backend.tensorflow_backend as tb
 
@@ -138,6 +139,15 @@ class Vgg19:
         return res
 
 
+def load_model_from_storage(model_h5):
+    model_path = google_storage.load_model(model_h5)
+    if model_path == '' or model_path is None:
+        return None
+    return keras.models.load_model(model_path)
+
+
+
+
 
 class Inference(NamedTuple):
 
@@ -160,9 +170,10 @@ class Inference(NamedTuple):
         model_file_name = utils.get_resource('data/models', self.model_h5)
         model = None
         try:
-            model = keras.models.load_model(model_file_name)
-        except:
-            print(f'Impossible de charger le modèle {model_file_name}')
+            # model = keras.models.load_model(model_file_name)
+            model = load_model_from_storage(self.model_h5)
+        except Exception as e:
+            print(f'Impossible de charger le modèle {model_file_name}', e)
         return model
 
     def preprocess_input(self, image: Image) -> Image:
@@ -196,8 +207,7 @@ class Inference(NamedTuple):
             (id, prediction, probability)
         """
         report_progress_func(
-            f"Chargement du model {self.name}... (Merci de patienter, La première fois, cela peut prendre un peu de temps!"
-            "minutes)",
+            f"Chargement du model {self.name}... (Merci de patienter, La première fois, cela peut prendre quelques minutes)",
             10,
         )
         model = self.get_model()
@@ -244,8 +254,8 @@ class Inference(NamedTuple):
 
         return fig
      
-ODIR_APPLICATIONS: List[Inference] = [
-     Inference(
+ODIR_APPLICATIONS = {
+     'Vgg19' : Inference(
         name="vgg19",
         input_shape = (224, 224),
         model_h5='model_17_10_vgg19_a.h5',
@@ -253,13 +263,14 @@ ODIR_APPLICATIONS: List[Inference] = [
         predictions_func = Vgg19.predict,
         decode_predictions_func=Vgg19.decode_predictions,
     ),
-        Inference(
-        name="Xception with fine tune",
+    'Xception' : Inference(
+        name="Xception ft",
         input_shape = (299, 299),
         model_h5='odir_model_weights_Xception_2022_10_21_multiclass_fine_tuning.h5',
         preprocess_input_func=XceptionFT.preprocess_image,
         predictions_func = XceptionFT.predict,
-        decode_predictions_func=XceptionFT.decode_predictions)]
+        decode_predictions_func=XceptionFT.decode_predictions)}
+
 
 def convert_from_cv2_to_image(img: np.ndarray) -> Image:
     # return Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
@@ -296,7 +307,8 @@ def upload_image_and_predict(selected_model):
                     progress_bar.progress(value)
                     progress.markdown(message)
             predictions = selected_model.get_top_predictions(image=image, report_progress_func=report_progress)
-            prediction_done = True
+            if len(predictions) > 0:
+                prediction_done = True
     with c2:
         # st.subheader("Main Prediction")
         # main_prediction = selected_model.to_main_prediction_string(predictions)
@@ -367,10 +379,11 @@ def display_choice(menu_choice, args):
 
             selected_model = st.sidebar.selectbox(
             "Sélectionne un modèle de classification d'image",
-            options=ODIR_APPLICATIONS,
+            options=ODIR_APPLICATIONS.keys(),
             index=0,
-            format_func=lambda x: x.name)
+            format_func=lambda x: x)
             # st.sidebar.markdown(get_resources_markdown(selected_model))
+            selected_model = ODIR_APPLICATIONS[selected_model]
             upload_image_and_predict(selected_model)
 
         return choice_c
