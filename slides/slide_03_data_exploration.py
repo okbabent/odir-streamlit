@@ -532,7 +532,7 @@ def exploration_tab(tab, fn, in_column=True):
       fn()
 
 def explorations():
-  explorations = [f'Exporation - {e+1}' for e in range(3)]
+  explorations = [f'Exploration - {e+1}' for e in range(3)]
   tabs = st.tabs(explorations)
   for i, tab in enumerate(tabs):
     exploration_tab(tab, globals()[f"exploration{i+1}"], i != len(explorations)-1)
