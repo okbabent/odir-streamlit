@@ -368,6 +368,9 @@ def exploration3():
   # df_YB = load_dataset.read_csv_data('df_YB.csv') #Dataset Yannick
   # df_TV = load_dataset.read_csv_data('df_TV.csv') #Dataset Thibaut
   # name of the sectors
+  # sectors = df_OB['diagnosis'].value_counts().sort_index().index
+  # sectors2 = df_YB['diagnosis'].value_counts().sort_index().index  
+  # sectors3 = df_TV['diagnosis'].value_counts().sort_index().index 
   sectors = df_OB['diagnosis'].value_counts().sort_index().index
   sectors2 = df_YB['diagnosis'].value_counts().sort_index().index  
   sectors3 = df_TV['diagnosis'].value_counts().sort_index().index 
@@ -532,7 +535,7 @@ def exploration_tab(tab, fn, in_column=True):
       fn()
 
 def explorations():
-  explorations = [f'Exploration - {e+1}' for e in range(3)]
+  explorations = [f'Exploration - {e+1}' for e in range(2)]
   tabs = st.tabs(explorations)
   for i, tab in enumerate(tabs):
     exploration_tab(tab, globals()[f"exploration{i+1}"], i != len(explorations)-1)
