@@ -256,21 +256,21 @@ class Inference(NamedTuple):
         return fig
      
 ODIR_APPLICATIONS = {
-     'Vgg19' : Inference(
-        name="vgg19",
-        input_shape = (224, 224),
-        model_h5='model_17_10_vgg19_a.h5',
-        preprocess_input_func=Vgg19.preprocess_image,
-        predictions_func = Vgg19.predict,
-        decode_predictions_func=Vgg19.decode_predictions,
-    ),
     'Xception' : Inference(
         name="Xception ft",
         input_shape = (299, 299),
         model_h5='odir_model_weights_Xception_2022_10_21_multiclass_fine_tuning.h5',
         preprocess_input_func=XceptionFT.preprocess_image,
         predictions_func = XceptionFT.predict,
-        decode_predictions_func=XceptionFT.decode_predictions)}
+        decode_predictions_func=XceptionFT.decode_predictions),
+    'Vgg19' : Inference(
+        name="vgg19",
+        input_shape = (224, 224),
+        model_h5='model_17_10_vgg19_a.h5',
+        preprocess_input_func=Vgg19.preprocess_image,
+        predictions_func = Vgg19.predict,
+        decode_predictions_func=Vgg19.decode_predictions,
+    )}
 
 
 def convert_from_cv2_to_image(img: np.ndarray) -> Image:
