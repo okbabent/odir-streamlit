@@ -17,6 +17,7 @@ import tensorflow as tf
 from tensorflow import keras
 from keras.applications import (vgg19, xception)
 from tempfile import NamedTemporaryFile
+import pickle
 from app import google_storage
 # from tf.keras.preprocessing.image import img_to_array, load_img
 # import tf.keras.backend.tensorflow_backend as tb
@@ -332,6 +333,37 @@ def upload_image_and_predict(selected_model):
 
 
 
+
+def fig_traingin_history(training_history):
+        """
+        Plot training history
+        """
+        ## Trained model analysis and evaluation
+        f, ax = plt.subplots(1,2, figsize=(35, 20))
+        ax[0].plot(training_history['loss'], label="Loss")
+        ax[0].plot(training_history['val_loss'], label="Validation loss")
+        ax[0].set_title('Model loss by epoch', pad=25, fontsize=25)
+        ax[0].set_xlabel('Epoch', fontsize=20)
+        ax[0].set_ylabel('Loss', fontsize=20)
+        ax[0].legend()
+
+        # Accuracy
+        ax[1].plot(training_history['accuracy'], label="Accuracy")
+        ax[1].plot(training_history['val_accuracy'], label="Validation accuracy")
+        ax[1].set_title('Model accuracy by epoch', pad=25, fontsize=25)
+        ax[1].set_xlabel('Epoch', fontsize=20)
+        ax[1].set_ylabel('Accuracy', fontsize=20)
+        ax[1].legend()
+        # plt.tight_layout()
+        return f
+
+def plot_trainging_history():
+    training_history_file_name = utils.get_resource('data/models', 'odir_model_weights_Xception_2022_10_21_multiclass_fine_tuning_HistoryDict')
+    with open(training_history_file_name, 'rb') as hist_read_file:
+        dict_history = pickle.load(hist_read_file)
+    return fig_traingin_history(dict_history)
+
+
 def display_choice(menu_choice, args):
     if menu_choice == 'A':
         def choice_a():
@@ -340,13 +372,18 @@ def display_choice(menu_choice, args):
             # loss = [0.2742179334, 0.2896939516, 0.3918916285, 0.4019442201, 0.4535985589, 0.6573]
             # accuracy = [0.9765625, 0.9796984792, 0.9744443297, 0.9728212953, 0.9625055194, 0.7532]
             # f1_score = [0.9765625, 0.9796985035, 0.9744443222, 0.9728213028, 0.9625055018, 0.7475]
+         
 
-            ui.add_vgap(5)
+            # ui.add_vgap(5)
             c = ui.color('red-60')
             st.markdown(ui.title_label("L'accuracy se situe entre 58.17% et 75.32% en moyenne", c), unsafe_allow_html=True)
-            ui.add_vgap(2)
+            # ui.add_vgap(1)
             st.markdown(ui.title_label("Le F1-score se situe entre 53.76% et 74.75% en moyenne", c), unsafe_allow_html=True)
 
+            _,c,_ = st.columns([1,10,1])
+            with c:
+                fig = plot_trainging_history()
+                st.pyplot(fig)
 
             # vgg19_f1_score = np.mean([0.55328798, 0.51749735, 0.5601318,  0.41499331, 0.42696629, 0.78800857, 0.64620107, 0.39408867])
             # print('vgg19_f1_score', vgg19_f1_score)
