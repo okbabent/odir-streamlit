@@ -37,13 +37,16 @@ def display_choice(menu_choice, args):
                     
                     - ## Plusieurs architectures de modèles testés par 'Transfert learning' & 'Fine Tunning'
                     - ## VGG16, VGG19, RESNET50, INCEPTION, XCEPTION depuis KERAS
-                    - ## Plusieurs tentatives de réglages des hperparamères
+                    - ## Plusieurs tentatives de réglages des hyperparamètres
                     - ## Utilisation de Tensor Board
                     - ## Accuracy comme métrique
                     - ## Modèles entrainés sur + de 18000 images
                     - ## Couche de sortie avec 8 unités avec une fonction d'activation Softmax/Sigmoid selon le modèle
                     """
                 )
+            _ , c, _= st.columns([1,2,1])
+            with c:
+                st.image('assets/The-transfer-learning-and-fine-tuning.png', use_column_width=True)
         return choice_b
     return None
 

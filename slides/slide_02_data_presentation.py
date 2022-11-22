@@ -56,11 +56,11 @@ def display_choice(menu_choice, args):
 
   if menu_choice == 'C':
     def choice_c():
-      _,c,_ = st.columns([1,2,1])
+      _,c,_ = st.columns([1,3,1])
       with c:
         df_desc = df.describe().T
         df_desc = df_desc.astype({'count':'int'})
-        st.dataframe(df_desc)
+        st.dataframe(df_desc, width=300)
     return choice_c
 
  

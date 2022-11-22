@@ -27,6 +27,7 @@ from app import google_storage
 # tb._SYMBOLIC_SCOPE.value = True  # pylint: disable=protected-access
 
 DISEASE_CLASSES = ['Normal', 'Diabetes', 'Glaucoma', 'Cataract', 'AMD', 'Hypertension', 'Myopia', 'Others']
+#                   ('N', 'D', 'G', 'C', 'A', 'H', 'M', 'O')
 
 IMAGE_TYPES = ["png", "jpg"]
 
@@ -339,13 +340,15 @@ def display_choice(menu_choice, args):
             loss = [0.2742179334, 0.2896939516, 0.3918916285, 0.4019442201, 0.4535985589, 0.6573]
             accuracy = [0.9765625, 0.9796984792, 0.9744443297, 0.9728212953, 0.9625055194, 0.7532]
             f1_score = [0.9765625, 0.9796985035, 0.9744443222, 0.9728213028, 0.9625055018, 0.7475]
-            fig = plt.figure()
+            fig = plt.figure(figsize=(15, 10))
             plt.plot(x, loss, '-bo', label='Loss')
             plt.plot(x, accuracy, 'go-', label='Accuracy')
             plt.plot(x, f1_score, 'r--',  label='F1-score')
-            plt.legend()
+            plt.xticks(fontsize=15)
+            plt.yticks(fontsize=15)
+            plt.legend(fontsize=15)
             img_title = ui.title_label('Métriques pour les différents modèles implémentés')
-            _,c,_ = st.columns([1,2,1])
+            _,c,_ = st.columns([1,5,1])
             with c:
                 st.markdown(img_title, unsafe_allow_html=True)
                 st.pyplot(fig)
