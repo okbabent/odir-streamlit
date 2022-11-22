@@ -198,11 +198,13 @@ def linked_image(image, target_url):
     """Shows an image with a link."""
     st.write(get_img_with_href(image, target_url), unsafe_allow_html=True)
 
-def title_label(txt, c=None):
+def title_label(txt, c=None, fontName=None):
     color1 = color("custom-100")
     if c is not None:
         color1 = c
-    return f"<h3 style='text-align: center; font-style: bold; color: {color1};'>{txt}</h3>"
+    if fontName is None:
+        return f"<h3 style='text-align: center; font-style: bold; color: {color1};'>{txt}</h3>"
+    return f"<h3 style='text-align: center; font-style: bold; font-name: fontName; color: {color1};'>{txt}</h3>"
 
 def subtitle_label(txt):
     color1 = color("custom-100")

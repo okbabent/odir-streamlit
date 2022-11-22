@@ -335,42 +335,63 @@ def upload_image_and_predict(selected_model):
 def display_choice(menu_choice, args):
     if menu_choice == 'A':
         def choice_a():
-            models = ['VGG16', 'VGG19', 'XCEPTION', 'INCEPTION', 'RESNET', 'XCEPTION-FT']
-            x = models
-            loss = [0.2742179334, 0.2896939516, 0.3918916285, 0.4019442201, 0.4535985589, 0.6573]
-            accuracy = [0.9765625, 0.9796984792, 0.9744443297, 0.9728212953, 0.9625055194, 0.7532]
-            f1_score = [0.9765625, 0.9796985035, 0.9744443222, 0.9728213028, 0.9625055018, 0.7475]
-            fig = plt.figure(figsize=(15, 10))
-            plt.plot(x, loss, '-bo', label='Loss')
-            plt.plot(x, accuracy, 'go-', label='Accuracy')
-            plt.plot(x, f1_score, 'r--',  label='F1-score')
-            plt.xticks(fontsize=15)
-            plt.yticks(fontsize=15)
-            plt.legend(fontsize=15)
-            img_title = ui.title_label('Métriques pour les différents modèles implémentés')
-            _,c,_ = st.columns([1,5,1])
-            with c:
-                st.markdown(img_title, unsafe_allow_html=True)
-                st.pyplot(fig)
+            # models = ['VGG16', 'VGG19', 'XCEPTION', 'INCEPTION', 'RESNET', 'XCEPTION-FT']
+            # x = models
+            # loss = [0.2742179334, 0.2896939516, 0.3918916285, 0.4019442201, 0.4535985589, 0.6573]
+            # accuracy = [0.9765625, 0.9796984792, 0.9744443297, 0.9728212953, 0.9625055194, 0.7532]
+            # f1_score = [0.9765625, 0.9796985035, 0.9744443222, 0.9728213028, 0.9625055018, 0.7475]
+
+            ui.add_vgap(5)
+            c = ui.color('red-60')
+            st.markdown(ui.title_label("L'accuracy se situe entre 58.17% et 75.32% en moyenne", c), unsafe_allow_html=True)
+            ui.add_vgap(2)
+            st.markdown(ui.title_label("Le F1-score se situe entre 53.76% et 74.75% en moyenne", c), unsafe_allow_html=True)
+
+
+            # vgg19_f1_score = np.mean([0.55328798, 0.51749735, 0.5601318,  0.41499331, 0.42696629, 0.78800857, 0.64620107, 0.39408867])
+            # print('vgg19_f1_score', vgg19_f1_score)
+            # vgg19_acc = 0.5817104149026249
+            # loss = [0.2896939516, 0.6573]
+            # accuracy = [0.5817104149026249, 0.7532]
+            # f1_score = [0.53764688, 0.7475]
+            # models = ['VGG19', 'XCEPTION-FT']
+            # x = models
+
+
+            # fig = plt.figure(figsize=(15, 10))
+            # plt.plot(x, loss, '-bo', label='Loss')
+            # plt.plot(x, accuracy, 'go-', label='Accuracy')
+            # plt.plot(x, f1_score, 'r--',  label='F1-score')
+            # plt.xticks(fontsize=15)
+            # plt.yticks(fontsize=15)
+            # plt.legend(fontsize=15)
+            # img_title = ui.title_label('Métriques pour les différents modèles implémentés')
+            # _,c,_ = st.columns([1,5,1])
+            # with c:
+            #     st.markdown(img_title, unsafe_allow_html=True)
+            #     st.pyplot(fig)
         return choice_a
     if menu_choice == 'B':
         def choice_b():
-            _, c1, c2, _ = st.columns([1,2,2,1])
+            _, c1, _ = st.columns([1,2,1])
             with c1:
-                img_title = 'Matrice de confusion - Xception-FT -'
+                img_title = 'Matrice de confusion Xception FT'
                 img_title = ui.title_label(img_title)
                 st.markdown(img_title, unsafe_allow_html=True)
                 st.image(utils.get_resource('assets', 'matrice_de_confusion_xception_ft_ob.png'), use_column_width=True)
             # _, c2, _ = st.columns([1,2,1])
-            with c2:
-                img_title = 'Matrice de confusion - RESNET -'
-                img_title = ui.title_label(img_title)
-                st.markdown(img_title, unsafe_allow_html=True)
-                st.image(utils.get_resource('assets', 'matrice_de_confusion_resnet_yb.jpg'), use_column_width=True)
-            _, c2, _ = st.columns([1,2,1])
-            with c2:
-                ui.add_vgap(2)
-                img_title = 'Exemple de prédiction avec Xception-FT'
+            # with c2:
+            #     img_title = 'Matrice de confusion - RESNET -'
+            #     img_title = ui.title_label(img_title)
+            #     st.markdown(img_title, unsafe_allow_html=True)
+            #     st.image(utils.get_resource('assets', 'matrice_de_confusion_resnet_yb.jpg'), use_column_width=True)
+            # _, c2, _ = st.columns([1,2,1])
+            # _, c2, _ = st.columns([1,2,1])
+            # with c2:
+            ui.add_vgap(2)
+            _, c1, _ = st.columns([1,2,1])
+            with c1:
+                img_title = 'Exemple de prédiction avec Xception FT'
                 img_title = ui.title_label(img_title)
                 st.markdown(img_title, unsafe_allow_html=True)
                 st.image(utils.get_resource('assets', 'predictions.png'), use_column_width=True)
@@ -403,7 +424,7 @@ def header():
 def display():
 
     ### Create Title
-    ui.slide_header("Analyse des performance des modèles", gap=(None, 10, None))
+    ui.slide_header("Analyse des performance des modèles", gap=(None, 5, None))
     ui.sub_menus(MenuChoice, display_choice)
    
 
